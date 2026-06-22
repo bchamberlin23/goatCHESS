@@ -8,22 +8,27 @@ import { frenchDefense } from "./openings/french";
 import { caroKann } from "./openings/caro-kann";
 import { englishOpening } from "./openings/english";
 import { kingsIndian } from "./openings/kings-indian";
+import { scandinavianOpening } from "./openings/scandinavian";
 import { backRankMate } from "./mates/back-rank";
 import { smotheredMate } from "./mates/smothered";
 import { arabianMate } from "./mates/arabian";
 import { bodensMate } from "./mates/bodens";
 import { anastasiasMate } from "./mates/anastasias";
+import { scholarsMate } from "./mates/scholars";
 import { fork } from "./tactics/fork";
 import { pin } from "./tactics/pin";
 import { skewer } from "./tactics/skewer";
 import { discoveredAttack } from "./tactics/discovered-attack";
 import { doubleCheck } from "./tactics/double-check";
+import { deflectionDecoy } from "./tactics/deflection-decoy";
 import { pawnStructure } from "./strategy/pawn-structure";
 import { pieceActivity } from "./strategy/piece-activity";
 import { spaceAdvantage } from "./strategy/space-advantage";
+import { openFilesOutposts } from "./strategy/open-files";
 import { kingPawnEndgame } from "./endgames/king-pawn";
 import { rookEndgames } from "./endgames/rook";
 import { opposition } from "./endgames/opposition";
+import { queenVsPawn } from "./endgames/queen-pawn";
 
 export const allTopics: LearnTopic[] = [
   // Openings
@@ -36,6 +41,7 @@ export const allTopics: LearnTopic[] = [
   caroKann,
   englishOpening,
   kingsIndian,
+  scandinavianOpening,
 
   // Mates
   backRankMate,
@@ -43,6 +49,7 @@ export const allTopics: LearnTopic[] = [
   arabianMate,
   bodensMate,
   anastasiasMate,
+  scholarsMate,
 
   // Tactics
   fork,
@@ -50,16 +57,19 @@ export const allTopics: LearnTopic[] = [
   skewer,
   discoveredAttack,
   doubleCheck,
+  deflectionDecoy,
 
   // Strategy
   pawnStructure,
   pieceActivity,
   spaceAdvantage,
+  openFilesOutposts,
 
   // Endgames
   kingPawnEndgame,
   rookEndgames,
   opposition,
+  queenVsPawn,
 ];
 
 export function getTopicsByCategory(category: string): LearnTopic[] {
