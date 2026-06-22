@@ -1,41 +1,27 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
-
-# testing
-/coverage
+node_modules
 
 # next.js
-/.next/
-/out/
-
-# production
-/build
+.next/
+out/
+next-env.d.ts
 
 # misc
 .DS_Store
 *.pem
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+# env files
+.env*.local
+.env
 
-# env files (can opt-in for committing if needed)
-.env*
+# ts build
+tsconfig.tsbuildinfo
 
-# vercel
-.vercel
+# CDK assets
+.cdk.staging
+cdk.out
+cdk.context.json
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Large puzzle database
+lichess_db_puzzle.csv.zst
+

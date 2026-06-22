@@ -1,7 +1,54 @@
-import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs";
+import path from "node:path";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+import { NextConfig } from "next";
+import { PHASE_PRODUCTION_BUILD } from "next/constants";
 
-export default nextConfig;
+const nextConfig = (phase: string): NextConfig => ({
+  output: phase === PHASE_PRODUCTION_BUILD ? "export" : undefined,
+  trailingSlash: false,
+  reactStrictMode: true,
+  reactCompiler: true,
+  images: {
+    unoptimized: true,
+  },
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
+  headers:
+    phase === PHASE_PRODUCTION_BUILD
+      ? undefined
+      : async () => [
+          {
+            source: "/engines/:blob*",
+            headers: [
+              {
+                key: "Cache-Control",
+                value: "public, max-age=31536000, immutable",
+              },
+              {
+                key: "Age",
+                value: "181921",
+              },
+            ],
+          },
+        ],
+});
+
+export default withSentryConfig(nextConfig, {
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+  org: process.env.SENTRY_ORG,
+  project: "javascript-nextjs",
+  widenClientFileUpload: true,
+  sourcemaps: {
+    deleteSourcemapsAfterUpload: true,
+  },
+  webpack: {
+    treeshake: {
+      removeDebugLogging: true,
+    },
+    reactComponentAnnotation: {
+      enabled: true,
+    },
+  },
+});
