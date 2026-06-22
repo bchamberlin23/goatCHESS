@@ -18,7 +18,6 @@ import { existsSync } from "node:fs";
 import { execSync } from "node:child_process";
 
 const PORT = Number(process.env.CHESSKIT_BRIDGE_PORT) || 8765;
-const IDLE_TIMEOUT_MS = 5 * 60 * 1000;
 
 // On startup, scan a few common locations for installed engines so the
 // client can show "detected" engines in the settings UI.
@@ -35,7 +34,9 @@ const detectEngines = () => {
   const found = [];
   for (const { name, args } of candidates) {
     try {
-      const path = execSync(`command -v ${name}`, { stdio: ["ignore", "pipe", "ignore"] })
+      const path = execSync(`command -v ${name}`, {
+        stdio: ["ignore", "pipe", "ignore"],
+      })
         .toString()
         .trim();
       if (path && existsSync(path)) {
@@ -56,7 +57,6 @@ class EngineSession {
     this.proc = null;
     this.stdoutBuf = "";
     this.stderrBuf = "";
-    this.idleTimer = null;
     this.closed = false;
   }
 
@@ -68,13 +68,19 @@ class EngineSession {
         detached: false,
       });
     } catch (err) {
-      this.send({ type: "error", message: `Failed to spawn engine: ${err.message}` });
+      this.send({
+        type: "error",
+        message: `Failed to spawn engine: ${err.message}`,
+      });
       this.cleanup();
       return;
     }
 
     this.proc.on("error", (err) => {
-      this.send({ type: "error", message: `Engine process error: ${err.message}` });
+      this.send({
+        type: "error",
+        message: `Engine process error: ${err.message}`,
+      });
       this.cleanup();
     });
 
@@ -106,7 +112,10 @@ class EngineSession {
       await this.runUntil("readyok", ["ucinewgame", "isready"]);
       this.send({ type: "ready" });
     } catch (err) {
-      this.send({ type: "error", message: `UCI handshake failed: ${err.message}` });
+      this.send({
+        type: "error",
+        message: `UCI handshake failed: ${err.message}`,
+      });
       this.cleanup();
     }
   }
@@ -118,13 +127,16 @@ class EngineSession {
     for (const line of lines) {
       const trimmed = line.replace(/\r$/, "");
       if (trimmed.length > 0) {
-        this.send({ type: "output", line: trimmed, stream: isStderr ? "stderr" : "stdout" });
+        this.send({
+          type: "output",
+          line: trimmed,
+          stream: isStderr ? "stderr" : "stdout",
+        });
         for (const handler of this._outputHandlers ?? []) {
           handler({ line: trimmed, stream: isStderr ? "stderr" : "stdout" });
         }
       }
     }
-    this.bumpIdleTimer();
   }
 
   send(msg) {
@@ -188,17 +200,8 @@ class EngineSession {
     this._outputHandlers = this._outputHandlers.filter((h) => h !== handler);
   }
 
-  bumpIdleTimer() {
-    if (this.idleTimer) clearTimeout(this.idleTimer);
-    this.idleTimer = setTimeout(() => {
-      this.send({ type: "closed", reason: "Idle timeout" });
-      this.cleanup();
-    }, IDLE_TIMEOUT_MS);
-  }
-
   cleanup() {
     this.closed = true;
-    if (this.idleTimer) clearTimeout(this.idleTimer);
     if (this.proc && !this.proc.killed) {
       try {
         this.proc.stdin.write("quit\n");
@@ -220,7 +223,9 @@ class EngineSession {
 const detectedEngines = detectEngines();
 console.log(
   `[chesskit-bridge] Detected engines: ${
-    detectedEngines.length === 0 ? "none" : detectedEngines.map((e) => e.name).join(", ")
+    detectedEngines.length === 0
+      ? "none"
+      : detectedEngines.map((e) => e.name).join(", ")
   }`
 );
 
@@ -238,7 +243,12 @@ wss.on("connection", (ws) => {
     try {
       msg = JSON.parse(data.toString("utf8"));
     } catch (err) {
-      ws.send(JSON.stringify({ type: "error", message: `Invalid JSON: ${err.message}` }));
+      ws.send(
+        JSON.stringify({
+          type: "error",
+          message: `Invalid JSON: ${err.message}`,
+        })
+      );
       return;
     }
 
@@ -249,11 +259,18 @@ wss.on("connection", (ws) => {
 
     if (msg.type === "init") {
       if (session) {
-        ws.send(JSON.stringify({ type: "error", message: "Session already initialized" }));
+        ws.send(
+          JSON.stringify({
+            type: "error",
+            message: "Session already initialized",
+          })
+        );
         return;
       }
       if (!msg.path || typeof msg.path !== "string") {
-        ws.send(JSON.stringify({ type: "error", message: "Missing engine path" }));
+        ws.send(
+          JSON.stringify({ type: "error", message: "Missing engine path" })
+        );
         return;
       }
       if (!existsSync(msg.path)) {
@@ -272,7 +289,9 @@ wss.on("connection", (ws) => {
 
     if (msg.type === "command") {
       if (!session) {
-        ws.send(JSON.stringify({ type: "error", message: "No active session" }));
+        ws.send(
+          JSON.stringify({ type: "error", message: "No active session" })
+        );
         return;
       }
       session.handleCommand(msg.line);
@@ -284,7 +303,12 @@ wss.on("connection", (ws) => {
       return;
     }
 
-    ws.send(JSON.stringify({ type: "error", message: `Unknown message type: ${msg.type}` }));
+    ws.send(
+      JSON.stringify({
+        type: "error",
+        message: `Unknown message type: ${msg.type}`,
+      })
+    );
   });
 
   ws.on("close", () => {

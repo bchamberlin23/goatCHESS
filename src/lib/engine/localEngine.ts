@@ -16,7 +16,7 @@ import { getMovesClassification } from "./helpers/moveClassification";
 import { parseEvaluationResults } from "./helpers/parseResults";
 import { LocalEngineConfig } from "./localEngineConfig";
 
-type Command = {
+type SessionJob = {
   commands: string[];
   finalMessage: string;
   onNewMessage?: (messages: string[]) => void;
@@ -24,61 +24,36 @@ type Command = {
   reject: (err: Error) => void;
 };
 
-export class LocalEngine implements Engine {
-  public readonly name: string;
+/**
+ * One engine subprocess connected to the bridge. Each session owns
+ * its own WebSocket, output buffer, and job queue. Multiple sessions
+ * in a `LocalEngine` pool give parallel evaluation (one position
+ * per session at a time).
+ */
+class LocalSession {
+  readonly id: number;
   private ws: WebSocket | null = null;
-  private isReadyFlag = false;
-  private multiPv = 3;
-  private elo: number | undefined = undefined;
-  private queue: Command[] = [];
-  private processing = false;
+  private isReady = false;
   private pendingLines: string[] = [];
+  private queue: SessionJob[] = [];
+  private processing = false;
+  private rejectAll: ((err: Error) => void) | null = null;
+  private config: LocalEngineConfig;
+  private options: Record<string, string>;
 
-  private constructor(config: LocalEngineConfig) {
-    this.name = config.id;
-  }
-
-  public static async create(config: LocalEngineConfig): Promise<LocalEngine> {
-    const engine = new LocalEngine(config);
-    await engine.connect(config);
-    engine.isReadyFlag = true;
-    return engine;
-  }
-
-  public getIsReady(): boolean {
-    return this.isReadyFlag;
-  }
-
-  public shutdown(): void {
-    this.isReadyFlag = false;
-    const abandoned = this.queue;
-    this.queue = [];
-    for (const cmd of abandoned) {
-      cmd.reject(new Error("Engine shut down"));
-    }
-    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      try {
-        this.ws.send(JSON.stringify({ type: "close" }));
-      } catch {
-        // ignore
-      }
-      this.ws.close();
-    }
-    this.ws = null;
-  }
-
-  public async stopAllCurrentJobs(): Promise<void> {
-    this.queue = [];
-    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      try {
-        this.ws.send(JSON.stringify({ type: "command", line: "stop" }));
-      } catch {
-        // ignore
-      }
+  constructor(id: number, config: LocalEngineConfig) {
+    this.id = id;
+    this.config = config;
+    this.options = {
+      Threads: "1",
+      Hash: "16",
+    };
+    if (config.options) {
+      Object.assign(this.options, config.options);
     }
   }
 
-  private async connect(config: LocalEngineConfig): Promise<void> {
+  public async connect(): Promise<void> {
     return new Promise((resolve, reject) => {
       const ws = new WebSocket(BRIDGE_URL);
       this.ws = ws;
@@ -92,17 +67,12 @@ export class LocalEngine implements Engine {
         );
       }, 10000);
 
-      const initOptions: Record<string, string> = { Threads: "1", Hash: "16" };
-      if (config.options) {
-        Object.assign(initOptions, config.options);
-      }
-
       ws.onopen = () => {
         ws.send(
           JSON.stringify({
             type: "init",
-            path: config.path,
-            options: initOptions,
+            path: this.config.path,
+            options: this.options,
           })
         );
       };
@@ -117,30 +87,26 @@ export class LocalEngine implements Engine {
 
         if (msg.type === "ready") {
           clearTimeout(timeout);
+          this.isReady = true;
           resolve();
         } else if (msg.type === "error") {
           clearTimeout(timeout);
           reject(new Error(msg.message ?? "Unknown bridge error"));
         } else if (msg.type === "closed") {
-          this.isReadyFlag = false;
-          const err = new Error(msg.message ?? "Engine closed");
-          const current = this.queue.shift();
-          current?.reject(err);
-          this.processQueue();
+          this.isReady = false;
+          this.rejectAll?.(new Error(msg.message ?? "Engine closed"));
         } else if (msg.type === "output" && msg.line !== undefined) {
           this.pendingLines.push(msg.line);
           const current = this.queue[0];
           if (current) {
-            if (current.onNewMessage) {
-              current.onNewMessage(this.pendingLines);
-            }
+            current.onNewMessage?.(this.pendingLines);
             if (msg.line.startsWith(current.finalMessage)) {
               const finished = this.queue.shift()!;
               const lines = this.pendingLines;
               this.pendingLines = [];
               this.processing = false;
               finished.resolve(lines);
-              this.processQueue();
+              this.pump();
             }
           }
         }
@@ -154,25 +120,17 @@ export class LocalEngine implements Engine {
       };
 
       ws.onclose = () => {
-        if (this.isReadyFlag) {
-          this.isReadyFlag = false;
-        }
+        this.isReady = false;
+        this.rejectAll?.(new Error("Engine connection closed"));
       };
     });
   }
 
-  private processQueue(): void {
-    if (this.processing || this.queue.length === 0) return;
-    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
-    this.processing = true;
-    const next = this.queue[0];
-    this.pendingLines = [];
-    for (const command of next.commands) {
-      this.ws.send(JSON.stringify({ type: "command", line: command }));
-    }
+  public getIsReady(): boolean {
+    return this.isReady;
   }
 
-  private enqueue(
+  public sendCommands(
     commands: string[],
     finalMessage: string,
     onNewMessage?: (messages: string[]) => void
@@ -185,8 +143,109 @@ export class LocalEngine implements Engine {
         resolve,
         reject,
       });
-      this.processQueue();
+      this.pump();
     });
+  }
+
+  public stop(): void {
+    this.queue = [];
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      try {
+        this.ws.send(JSON.stringify({ type: "command", line: "stop" }));
+      } catch {
+        // ignore
+      }
+    }
+  }
+
+  public shutdown(): void {
+    this.queue = [];
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      try {
+        this.ws.send(JSON.stringify({ type: "close" }));
+      } catch {
+        // ignore
+      }
+      this.ws.close();
+    }
+    this.ws = null;
+    this.isReady = false;
+  }
+
+  private pump(): void {
+    if (this.processing || this.queue.length === 0) return;
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+    this.processing = true;
+    const next = this.queue[0];
+    this.pendingLines = [];
+    for (const command of next.commands) {
+      this.ws.send(JSON.stringify({ type: "command", line: command }));
+    }
+  }
+}
+
+export class LocalEngine implements Engine {
+  public readonly name: string;
+  private sessions: LocalSession[] = [];
+  private multiPv = 3;
+  private elo: number | undefined = undefined;
+  private config: LocalEngineConfig;
+
+  private constructor(config: LocalEngineConfig) {
+    this.name = config.id;
+    this.config = config;
+  }
+
+  public static async create(config: LocalEngineConfig): Promise<LocalEngine> {
+    const engine = new LocalEngine(config);
+    await engine.addSession();
+    return engine;
+  }
+
+  public getIsReady(): boolean {
+    return this.sessions.length > 0 && this.sessions[0].getIsReady();
+  }
+
+  public shutdown(): void {
+    for (const session of this.sessions) {
+      session.shutdown();
+    }
+    this.sessions = [];
+  }
+
+  public async stopAllCurrentJobs(): Promise<void> {
+    for (const session of this.sessions) {
+      session.stop();
+    }
+  }
+
+  private async addSession(): Promise<LocalSession> {
+    const session = new LocalSession(this.sessions.length, this.config);
+    await session.connect();
+    this.sessions.push(session);
+    return session;
+  }
+
+  private async setWorkersNb(workersNb: number): Promise<void> {
+    if (workersNb === this.sessions.length) return;
+    if (workersNb < 1) {
+      throw new Error(
+        `Number of workers must be greater than 0, got ${workersNb} instead`
+      );
+    }
+
+    if (workersNb < this.sessions.length) {
+      const toRemove = this.sessions.splice(workersNb);
+      for (const session of toRemove) {
+        session.shutdown();
+      }
+      return;
+    }
+
+    const toAdd = workersNb - this.sessions.length;
+    for (let i = 0; i < toAdd; i++) {
+      await this.addSession();
+    }
   }
 
   private async setMultiPv(multiPv: number): Promise<void> {
@@ -194,7 +253,7 @@ export class LocalEngine implements Engine {
     if (multiPv < 2 || multiPv > 6) {
       throw new Error(`Invalid MultiPV value: ${multiPv}`);
     }
-    await this.enqueue(
+    await this.broadcast(
       [`setoption name MultiPV value ${multiPv}`, "isready"],
       "readyok"
     );
@@ -203,26 +262,33 @@ export class LocalEngine implements Engine {
 
   private async setElo(elo: number): Promise<void> {
     if (elo === this.elo) return;
-
     if (elo >= 3200) {
-      await this.enqueue(
+      await this.broadcast(
         ["setoption name UCI_LimitStrength value false", "isready"],
         "readyok"
       );
       this.elo = elo;
       return;
     }
-
     const clampedElo = Math.max(1320, Math.min(3190, elo));
-    await this.enqueue(
+    await this.broadcast(
       ["setoption name UCI_LimitStrength value true", "isready"],
       "readyok"
     );
-    await this.enqueue(
+    await this.broadcast(
       [`setoption name UCI_Elo value ${clampedElo}`, "isready"],
       "readyok"
     );
     this.elo = elo;
+  }
+
+  private async broadcast(
+    commands: string[],
+    finalMessage: string
+  ): Promise<void> {
+    await Promise.all(
+      this.sessions.map((s) => s.sendCommands(commands, finalMessage))
+    );
   }
 
   public async evaluateGame({
@@ -232,10 +298,10 @@ export class LocalEngine implements Engine {
     multiPv = this.multiPv,
     setEvaluationProgress,
     playersRatings,
+    workersNb = 1,
     signal,
   }: EvaluateGameParams): Promise<GameEval> {
     this.throwErrorIfNotReady();
-    this.isReadyFlag = false;
     setEvaluationProgress?.(1);
 
     try {
@@ -244,6 +310,7 @@ export class LocalEngine implements Engine {
       }
 
       await this.setMultiPv(multiPv);
+      await this.setWorkersNb(workersNb);
 
       const positions: PositionEval[] = new Array(fens.length);
       let completed = 0;
@@ -261,48 +328,54 @@ export class LocalEngine implements Engine {
       signal?.addEventListener("abort", abortHandler);
 
       try {
-        for (let i = 0; i < fens.length; i++) {
-          if (signal?.aborted) {
-            throw new DOMException("Analysis cancelled", "AbortError");
-          }
+        await Promise.all(
+          fens.map(async (fen, i) => {
+            if (signal?.aborted) {
+              return;
+            }
 
-          const fen = fens[i];
-          const whoIsCheckmated = getWhoIsCheckmated(fen);
-          if (whoIsCheckmated) {
-            updateEval(i, {
-              lines: [
-                {
-                  pv: [],
-                  depth: 0,
-                  multiPv: 1,
-                  mate: whoIsCheckmated === "w" ? -1 : 1,
-                },
-              ],
-            });
-            continue;
-          }
+            const whoIsCheckmated = getWhoIsCheckmated(fen);
+            if (whoIsCheckmated) {
+              updateEval(i, {
+                lines: [
+                  {
+                    pv: [],
+                    depth: 0,
+                    multiPv: 1,
+                    mate: whoIsCheckmated === "w" ? -1 : 1,
+                  },
+                ],
+              });
+              return;
+            }
 
-          const isStalemate = getIsStalemate(fen);
-          if (isStalemate) {
-            updateEval(i, {
-              lines: [
-                {
-                  pv: [],
-                  depth: 0,
-                  multiPv: 1,
-                  cp: 0,
-                },
-              ],
-            });
-            continue;
-          }
+            const isStalemate = getIsStalemate(fen);
+            if (isStalemate) {
+              updateEval(i, {
+                lines: [
+                  {
+                    pv: [],
+                    depth: 0,
+                    multiPv: 1,
+                    cp: 0,
+                  },
+                ],
+              });
+              return;
+            }
 
-          const result = await this.evaluatePosition(fen, depth);
-          updateEval(i, result);
-        }
+            const result = await this.evaluatePosition(fen, depth);
+            if (signal?.aborted) {
+              return;
+            }
+            updateEval(i, result);
+          })
+        );
       } finally {
         signal?.removeEventListener("abort", abortHandler);
       }
+
+      await this.setWorkersNb(1);
 
       const positionsWithClassification = getMovesClassification(
         positions,
@@ -329,9 +402,8 @@ export class LocalEngine implements Engine {
       };
     } catch (error) {
       await this.stopAllCurrentJobs().catch(console.error);
+      await this.setWorkersNb(1).catch(console.error);
       throw error;
-    } finally {
-      this.isReadyFlag = true;
     }
   }
 
@@ -339,7 +411,11 @@ export class LocalEngine implements Engine {
     fen: string,
     depth = 16
   ): Promise<PositionEval> {
-    const results = await this.enqueue(
+    const session = this.pickSession();
+    if (!session) {
+      throw new Error("No available engine session");
+    }
+    const results = await session.sendCommands(
       [`position fen ${fen}`, `go depth ${depth}`],
       "bestmove"
     );
@@ -382,7 +458,11 @@ export class LocalEngine implements Engine {
       return lichessEval;
     }
 
-    const results = await this.enqueue(
+    const session = this.pickSession();
+    if (!session) {
+      throw new Error("No available engine session");
+    }
+    const results = await session.sendCommands(
       [`position fen ${fen}`, `go depth ${depth}`],
       "bestmove",
       onNewMessage
@@ -435,7 +515,11 @@ export class LocalEngine implements Engine {
       `Evaluating position: ${fen} with depth ${targetDepth}`
     );
 
-    const results = await this.enqueue(
+    const session = this.pickSession();
+    if (!session) {
+      throw new Error("No available engine session");
+    }
+    const results = await session.sendCommands(
       [`position fen ${fen}`, `go depth ${targetDepth}`],
       "bestmove"
     );
@@ -448,8 +532,17 @@ export class LocalEngine implements Engine {
     return move === "(none)" ? undefined : move;
   }
 
+  private pickSession(): LocalSession | undefined {
+    for (const session of this.sessions) {
+      if (session.getIsReady()) {
+        return session;
+      }
+    }
+    return this.sessions[0];
+  }
+
   private throwErrorIfNotReady(): void {
-    if (!this.isReadyFlag) {
+    if (this.sessions.length === 0) {
       throw new Error(`${this.name} is not ready`);
     }
   }

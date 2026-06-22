@@ -4,6 +4,8 @@ import { BRIDGE_HELLO_TIMEOUT_MS, BRIDGE_URL } from "@/lib/engine/bridge";
 import {
   detectedLocalEnginesAtom,
   localBridgeAvailableAtom,
+  localEnginesAtom,
+  newLocalEngineId,
 } from "@/lib/engine/localEngineConfig";
 
 interface BridgeHello {
@@ -17,12 +19,16 @@ interface BridgeHello {
  * `localBridgeAvailableAtom` and `detectedLocalEnginesAtom` in sync.
  *
  * Re-pings every 10s so the UI recovers automatically if the bridge
- * is started after the page (e.g. when the user opens the terminal
- * after the browser tab).
+ * is started after the page.
+ *
+ * Also auto-registers any detected engines that aren't already in
+ * the user's local engines list, so first-time setup is zero-click
+ * for engines found on `PATH` (stockfish, lc0, etc).
  */
 export const useLocalBridgeStatus = () => {
   const setAvailable = useSetAtom(localBridgeAvailableAtom);
   const setDetected = useSetAtom(detectedLocalEnginesAtom);
+  const setEngines = useSetAtom(localEnginesAtom);
 
   useEffect(() => {
     let cancelled = false;
@@ -40,7 +46,20 @@ export const useLocalBridgeStatus = () => {
         if (settled || cancelled) return;
         settled = true;
         setAvailable(available);
-        if (detected) setDetected(detected);
+        if (available) {
+          setDetected(detected);
+          setEngines((prev) => {
+            const knownPaths = new Set(prev.map((e) => e.path));
+            const toAdd = detected
+              .filter((d) => !knownPaths.has(d.path))
+              .map((d) => ({
+                id: newLocalEngineId(),
+                name: d.name,
+                path: d.path,
+              }));
+            return toAdd.length > 0 ? [...prev, ...toAdd] : prev;
+          });
+        }
         try {
           ws.close();
         } catch {
@@ -86,5 +105,5 @@ export const useLocalBridgeStatus = () => {
       cancelled = true;
       if (timer) clearTimeout(timer);
     };
-  }, [setAvailable, setDetected]);
+  }, [setAvailable, setDetected, setEngines]);
 };
