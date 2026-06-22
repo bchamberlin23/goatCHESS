@@ -1049,12 +1049,12 @@ export default function LessonPage() {
                     </Typography>
                   </Typography>
 
-                  {/* PGN-style notation display */}
+                  {/* PGN-style notation display — clickable moves */}
                   <Box
                     sx={{
                       fontFamily: "monospace",
-                      fontSize: "0.85rem",
-                      lineHeight: 1.8,
+                      fontSize: "0.9rem",
+                      lineHeight: 2,
                       p: 1.5,
                       mb: 1.5,
                       borderRadius: 1.5,
@@ -1067,7 +1067,7 @@ export default function LessonPage() {
                         t.palette.mode === "dark"
                           ? "rgba(255,255,255,0.05)"
                           : "rgba(0,0,0,0.05)",
-                      maxHeight: 80,
+                      maxHeight: 100,
                       overflow: "auto",
                       wordBreak: "break-word",
                     }}
@@ -1079,10 +1079,10 @@ export default function LessonPage() {
                           <Typography
                             component="span"
                             color="text.secondary"
-                            fontSize="0.78rem"
+                            fontSize="0.82rem"
                             fontFamily="monospace"
                           >
-                            Press → to start
+                            Click any move below or press → to start
                           </Typography>
                         );
                       }
@@ -1094,41 +1094,105 @@ export default function LessonPage() {
                           b: playedMoves[i + 1],
                         });
                       }
-                      return pairs.map((p, idx) => (
-                        <Box
-                          key={idx}
-                          component="span"
-                          sx={{ mr: 1.5, whiteSpace: "nowrap" }}
-                        >
+                      return pairs.map((p, idx) => {
+                        const wIdx = idx * 2;
+                        const bIdx = wIdx + 1;
+                        return (
                           <Box
+                            key={idx}
                             component="span"
-                            sx={{ opacity: 0.5, mr: 0.5 }}
+                            sx={{ mr: 1.5, whiteSpace: "nowrap" }}
                           >
-                            {p.num}.
-                          </Box>
-                          <PrettyMoveSan
-                            san={p.w!}
-                            color="w"
-                            typographyProps={{
-                              fontSize: "0.85rem",
-                              fontWeight: 650,
-                            }}
-                          />
-                          {p.b && (
-                            <>
-                              <Box component="span" sx={{ mx: 0.75 }} />
+                            <Box
+                              component="span"
+                              sx={{ opacity: 0.5, mr: 0.5 }}
+                            >
+                              {p.num}.
+                            </Box>
+                            <Box
+                              component="span"
+                              onClick={() => goToMove(wIdx + 1)}
+                              sx={{
+                                cursor: "pointer",
+                                px: 0.5,
+                                py: 0.15,
+                                borderRadius: 0.5,
+                                bgcolor:
+                                  moveIndex === wIdx + 1
+                                    ? (t: any) =>
+                                        t.palette.mode === "dark"
+                                          ? "rgba(201,169,110,0.25)"
+                                          : "rgba(201,169,110,0.18)"
+                                    : "transparent",
+                                color:
+                                  moveIndex === wIdx + 1
+                                    ? "#C9A96E"
+                                    : "inherit",
+                                fontWeight: moveIndex === wIdx + 1 ? 800 : 650,
+                                "&:hover": {
+                                  bgcolor: (t: any) =>
+                                    t.palette.mode === "dark"
+                                      ? "rgba(201,169,110,0.15)"
+                                      : "rgba(201,169,110,0.1)",
+                                },
+                              }}
+                            >
                               <PrettyMoveSan
-                                san={p.b}
-                                color="b"
+                                san={p.w!}
+                                color="w"
                                 typographyProps={{
-                                  fontSize: "0.85rem",
-                                  fontWeight: 650,
+                                  fontSize: "0.9rem",
+                                  fontWeight: moveIndex === wIdx + 1 ? 800 : 650,
                                 }}
                               />
-                            </>
-                          )}
-                        </Box>
-                      ));
+                            </Box>
+                            {p.b && (
+                              <>
+                                <Box component="span" sx={{ mx: 0.5 }} />
+                                <Box
+                                  component="span"
+                                  onClick={() => goToMove(bIdx + 1)}
+                                  sx={{
+                                    cursor: "pointer",
+                                    px: 0.5,
+                                    py: 0.15,
+                                    borderRadius: 0.5,
+                                    bgcolor:
+                                      moveIndex === bIdx + 1
+                                        ? (t: any) =>
+                                            t.palette.mode === "dark"
+                                              ? "rgba(201,169,110,0.25)"
+                                              : "rgba(201,169,110,0.18)"
+                                        : "transparent",
+                                    color:
+                                      moveIndex === bIdx + 1
+                                        ? "#C9A96E"
+                                        : "inherit",
+                                    fontWeight:
+                                      moveIndex === bIdx + 1 ? 800 : 650,
+                                    "&:hover": {
+                                      bgcolor: (t: any) =>
+                                        t.palette.mode === "dark"
+                                          ? "rgba(201,169,110,0.15)"
+                                          : "rgba(201,169,110,0.1)",
+                                    },
+                                  }}
+                                >
+                                  <PrettyMoveSan
+                                    san={p.b}
+                                    color="b"
+                                    typographyProps={{
+                                      fontSize: "0.9rem",
+                                      fontWeight:
+                                        moveIndex === bIdx + 1 ? 800 : 650,
+                                    }}
+                                  />
+                                </Box>
+                              </>
+                            )}
+                          </Box>
+                        );
+                      });
                     })()}
                   </Box>
 
