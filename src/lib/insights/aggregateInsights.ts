@@ -118,16 +118,21 @@ const computeAnalysisRange = (games: InsightsGameResult[]): AnalysisRange => {
   };
 };
 
+const safeAvg = (values: number[]): number => {
+  const valid = values.filter((v) => Number.isFinite(v));
+  if (valid.length === 0) return 0;
+  const sum = valid.reduce((acc, v) => acc + v, 0);
+  return sum / valid.length;
+};
+
 const computeOverallAccuracy = (games: InsightsGameResult[]): number => {
   if (games.length === 0) return 0;
-  const sum = games.reduce((acc, g) => acc + g.userAccuracy, 0);
-  return round(sum / games.length);
+  return round(safeAvg(games.map((g) => g.userAccuracy)));
 };
 
 const computeEstimatedRating = (games: InsightsGameResult[]): number => {
   if (games.length === 0) return 0;
-  const sum = games.reduce((acc, g) => acc + g.userEstimatedElo, 0);
-  return Math.round(sum / games.length);
+  return Math.round(safeAvg(games.map((g) => g.userEstimatedElo)));
 };
 
 const computeWinRate = (

@@ -99,7 +99,9 @@ export default function PhaseAccuracy({ data }: PhaseAccuracyProps) {
         alignItems="center"
       >
         {PHASE_CONFIG.map((phase) => {
-          const accuracy = data.phaseAccuracy[phase.key];
+          const accuracy = Number.isFinite(data.phaseAccuracy[phase.key])
+            ? data.phaseAccuracy[phase.key]
+            : 0;
           return (
             <PhaseArc
               key={phase.key}
@@ -126,15 +128,16 @@ function PhaseArc({
   accuracy: number;
   isDark: boolean;
 }) {
+  const safeAccuracy = Number.isFinite(accuracy) ? accuracy : 0;
   const [animatedAccuracy, setAnimatedAccuracy] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => setAnimatedAccuracy(accuracy), 150);
+    const timer = setTimeout(() => setAnimatedAccuracy(safeAccuracy), 150);
     return () => clearTimeout(timer);
-  }, [accuracy]);
+  }, [safeAccuracy]);
 
-  const color = getAccuracyColor(accuracy);
-  const qualityLabel = getAccuracyLabel(accuracy);
+  const color = getAccuracyColor(safeAccuracy);
+  const qualityLabel = getAccuracyLabel(safeAccuracy);
 
   const radius = 38;
   const circumference = 2 * Math.PI * radius;
@@ -199,7 +202,7 @@ function PhaseArc({
             color={color}
             lineHeight={1}
           >
-            {accuracy.toFixed(0)}
+            {safeAccuracy.toFixed(0)}
           </Typography>
           <Typography
             fontSize="0.55rem"

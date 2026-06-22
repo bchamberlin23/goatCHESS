@@ -35,9 +35,14 @@ export default function InsightsHeader({
   const platformCfg = PLATFORM_CONFIG[platform];
 
   const { wins, draws, losses } = report.winRate;
-  const accuracy = report.overallAccuracy;
-  const estimatedRating = report.estimatedRating;
-  const ratingDiff = estimatedRating - avgRating;
+  const accuracy = Number.isFinite(report.overallAccuracy)
+    ? report.overallAccuracy
+    : 0;
+  const estimatedRating = Number.isFinite(report.estimatedRating)
+    ? report.estimatedRating
+    : 0;
+  const safeAvgRating = Number.isFinite(avgRating) ? avgRating : 0;
+  const ratingDiff = estimatedRating - safeAvgRating;
 
   // Animate the ring on mount
   const [animatedAccuracy, setAnimatedAccuracy] = useState(0);
@@ -300,7 +305,7 @@ export default function InsightsHeader({
               fontWeight={500}
               color="text.secondary"
             >
-              vs avg {avgRating}
+              vs avg {safeAvgRating}
             </Typography>
           </Stack>
         </Stack>
