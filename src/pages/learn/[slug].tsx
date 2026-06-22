@@ -49,6 +49,8 @@ export default function LessonPage() {
   const [activeSection, setActiveSection] = useState(0);
   const [fen, setFen] = useState("");
   const [moveIndex, setMoveIndex] = useState(0);
+  const [autoplay, setAutoplay] = useState(false);
+  const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Quiz state
   const [quizRevealed, setQuizRevealed] = useState(false);
@@ -119,10 +121,48 @@ export default function LessonPage() {
       if (e.key === "ArrowRight" && hasMoves && moveIndex < movesLength)
         goToMove(moveIndex + 1);
       if (e.key === "ArrowLeft" && moveIndex > 0) goToMove(moveIndex - 1);
+      if (e.key === " " && hasMoves) {
+        e.preventDefault();
+        setAutoplay((a) => !a);
+      }
     };
     window.addEventListener("keydown", h);
     return () => window.removeEventListener("keydown", h);
   }, [viewMode, hasMoves, moveIndex, movesLength, goToMove]);
+
+  // ── Autoplay: auto-advance through moves ─────────
+  useEffect(() => {
+    if (autoplayRef.current) {
+      clearInterval(autoplayRef.current);
+      autoplayRef.current = null;
+    }
+    if (autoplay && viewMode === "lesson" && hasMoves && moveIndex < movesLength) {
+      autoplayRef.current = setInterval(() => {
+        setMoveIndex((idx) => {
+          if (idx >= (section?.moves?.length ?? 0)) {
+            setAutoplay(false);
+            return idx;
+          }
+          const next = idx + 1;
+          const f = computeFen(activeSection, next);
+          setFen(f);
+          if (next >= (section?.moves?.length ?? 0)) setAutoplay(false);
+          return next;
+        });
+      }, 1200);
+    }
+    return () => {
+      if (autoplayRef.current) {
+        clearInterval(autoplayRef.current);
+        autoplayRef.current = null;
+      }
+    };
+  }, [autoplay, viewMode, hasMoves, moveIndex, section, activeSection, computeFen]);
+
+  // ── Stop autoplay when section changes ───────────
+  useEffect(() => {
+    setAutoplay(false);
+  }, [activeSection]);
 
   // ── Practice: start ─────────────────────────────
   const startPractice = useCallback(() => {
@@ -491,7 +531,27 @@ export default function LessonPage() {
                     id="learn-board"
                     position={fen}
                     boardWidth={boardWidth}
-                    arePiecesDraggable={false}
+                    arePiecesDraggable={
+                      viewMode === "lesson" &&
+                      (interactionMode === "freeplay" || interactionMode === "guided")
+                    }
+                    onPieceDrop={(sourceSquare, targetSquare, piece) => {
+                      try {
+                        const g = new Chess(fen);
+                        const move = g.move({
+                          from: sourceSquare,
+                          to: targetSquare,
+                          promotion: piece?.[1]?.toLowerCase() === "p" ? "q" : undefined,
+                        });
+                        if (move) {
+                          setFen(g.fen());
+                          return true;
+                        }
+                        return false;
+                      } catch {
+                        return false;
+                      }
+                    }}
                     animationDuration={250}
                     customBoardStyle={{
                       borderRadius: "8px",
@@ -641,6 +701,47 @@ export default function LessonPage() {
                               }}
                             >
                               <Icon icon="mdi:chevron-left" width={28} />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                        <Tooltip
+                          title={autoplay ? "Pause (space)" : "Autoplay (space)"}
+                        >
+                          <span>
+                            <IconButton
+                              onClick={() => setAutoplay((a) => !a)}
+                              disabled={moveIndex >= movesLength}
+                              sx={{
+                                bgcolor: autoplay
+                                  ? (t: any) =>
+                                      t.palette.mode === "dark"
+                                        ? "rgba(201,169,110,0.35)"
+                                        : "rgba(201,169,110,0.3)"
+                                  : (t: any) =>
+                                      t.palette.mode === "dark"
+                                        ? "rgba(201,169,110,0.12)"
+                                        : "rgba(201,169,110,0.08)",
+                                border: "1px solid",
+                                borderColor: autoplay
+                                  ? "#C9A96E"
+                                  : (t: any) =>
+                                      t.palette.mode === "dark"
+                                        ? "rgba(201,169,110,0.25)"
+                                        : "rgba(201,169,110,0.2)",
+                                color: autoplay ? "#1a1a1a" : "#C9A96E",
+                                "&:hover": {
+                                  bgcolor: (t: any) =>
+                                    t.palette.mode === "dark"
+                                      ? "rgba(201,169,110,0.3)"
+                                      : "rgba(201,169,110,0.22)",
+                                },
+                                "&.Mui-disabled": { opacity: 0.3 },
+                              }}
+                            >
+                              <Icon
+                                icon={autoplay ? "mdi:pause" : "mdi:play"}
+                                width={22}
+                              />
                             </IconButton>
                           </span>
                         </Tooltip>
@@ -947,6 +1048,90 @@ export default function LessonPage() {
                       — click any move to jump
                     </Typography>
                   </Typography>
+
+                  {/* PGN-style notation display */}
+                  <Box
+                    sx={{
+                      fontFamily: "monospace",
+                      fontSize: "0.85rem",
+                      lineHeight: 1.8,
+                      p: 1.5,
+                      mb: 1.5,
+                      borderRadius: 1.5,
+                      bgcolor: (t: any) =>
+                        t.palette.mode === "dark"
+                          ? "rgba(0,0,0,0.25)"
+                          : "rgba(0,0,0,0.03)",
+                      border: "1px solid",
+                      borderColor: (t: any) =>
+                        t.palette.mode === "dark"
+                          ? "rgba(255,255,255,0.05)"
+                          : "rgba(0,0,0,0.05)",
+                      maxHeight: 80,
+                      overflow: "auto",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {(() => {
+                      const playedMoves = section.moves!.slice(0, moveIndex);
+                      if (playedMoves.length === 0) {
+                        return (
+                          <Typography
+                            component="span"
+                            color="text.secondary"
+                            fontSize="0.78rem"
+                            fontFamily="monospace"
+                          >
+                            Press → to start
+                          </Typography>
+                        );
+                      }
+                      const pairs: { num: number; w?: string; b?: string }[] = [];
+                      for (let i = 0; i < playedMoves.length; i += 2) {
+                        pairs.push({
+                          num: i / 2 + 1,
+                          w: playedMoves[i],
+                          b: playedMoves[i + 1],
+                        });
+                      }
+                      return pairs.map((p, idx) => (
+                        <Box
+                          key={idx}
+                          component="span"
+                          sx={{ mr: 1.5, whiteSpace: "nowrap" }}
+                        >
+                          <Box
+                            component="span"
+                            sx={{ opacity: 0.5, mr: 0.5 }}
+                          >
+                            {p.num}.
+                          </Box>
+                          <PrettyMoveSan
+                            san={p.w!}
+                            color="w"
+                            typographyProps={{
+                              fontSize: "0.85rem",
+                              fontWeight: 650,
+                            }}
+                          />
+                          {p.b && (
+                            <>
+                              <Box component="span" sx={{ mx: 0.75 }} />
+                              <PrettyMoveSan
+                                san={p.b}
+                                color="b"
+                                typographyProps={{
+                                  fontSize: "0.85rem",
+                                  fontWeight: 650,
+                                }}
+                              />
+                            </>
+                          )}
+                        </Box>
+                      ));
+                    })()}
+                  </Box>
+
                   <Stack
                     direction="row"
                     flexWrap="wrap"
@@ -1037,7 +1222,23 @@ export default function LessonPage() {
                       >
                         →
                       </Box>{" "}
-                      arrow keys to step through moves
+                      arrow keys or{" "}
+                      <Box
+                        component="span"
+                        sx={{
+                          fontFamily: "monospace",
+                          bgcolor: (t: any) =>
+                            t.palette.mode === "dark"
+                              ? "rgba(255,255,255,0.08)"
+                              : "rgba(0,0,0,0.06)",
+                          px: 0.5,
+                          borderRadius: 0.5,
+                          fontWeight: 700,
+                        }}
+                      >
+                        space
+                      </Box>{" "}
+                      to autoplay
                     </Typography>
                   </Stack>
                 </Paper>
