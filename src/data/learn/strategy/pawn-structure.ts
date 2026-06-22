@@ -5,21 +5,29 @@ export const pawnStructure: LearnTopic = {
   title: "Pawn Structure Fundamentals",
   category: "strategy",
   description:
-    "Pawns are the soul of chess. Learn about pawn chains, islands, passed pawns, doubled pawns, and how pawn structure determines your strategic plans.",
+    "Pawns are the soul of chess. Learn about pawn chains, islands, passed pawns, doubled pawns, and how pawn structure determines your strategic plans. Walk through real examples.",
   difficulty: "beginner",
-  estimatedMinutes: 12,
+  estimatedMinutes: 15,
   icon: "mdi:chess-pawn",
   tags: ["pawns", "structure", "islands", "passed pawn", "doubled", "chains"],
   sections: [
     {
       title: "Why Pawn Structure Matters",
       type: "text",
-      content: `Philidor said "pawns are the soul of chess" — and he was right. While pieces can move freely, pawns only move forward and cannot go back. Every pawn move creates a permanent weakness. Understanding pawn structure is the foundation of strategic chess. The pawn structure determines which pieces are good or bad, where the open files are, and what the plans should be for both sides.`,
+      content: `Philidor said "pawns are the soul of chess" — and he was right. While pieces can move freely, pawns only move forward and cannot go back. Every pawn move creates a permanent weakness. Understanding pawn structure is the foundation of strategic chess.
+
+The pawn structure determines:
+- Which pieces are good or bad
+- Where the open files are
+- What the plans should be for both sides
+- Who has the long-term advantage
+
+The lesson: strong players think about pawn structure before they think about pieces. The pawns are the skeleton of the position, and pieces are the muscle.`,
     },
     {
       title: "Pawn Islands",
       type: "key-idea",
-      content: `A pawn island is a group of connected pawns (pawns that can protect each other). The fewer islands you have, the better your pawn structure. 
+      content: `A pawn island is a group of connected pawns (pawns that can protect each other). The fewer islands you have, the better your pawn structure.
 
 Typical counts:
 - Perfect: 1 island (all pawns connected: a2-f2-g2-h2 type structures)
@@ -31,11 +39,14 @@ Why islands matter:
 1. Each island needs at least one piece to defend it
 2. More islands = more defensive obligations = less active pieces
 3. Connected pawns control more squares and support each other
-4. The side with fewer pawn islands has a long-term strategic advantage`,
+4. The side with fewer pawn islands has a long-term strategic advantage
+
+The lesson: count your pawn islands after every capture sequence. If you have more islands than your opponent, look for trades to reduce the difference. The side with fewer islands usually has better piece activity.`,
     },
     {
       title: "Passed Pawns",
       type: "position",
+      interactionMode: "freeplay",
       fen: "8/2p5/1pP5/8/8/8/8/8 w - - 0 1",
       content: `A passed pawn is a pawn that has no enemy pawns blocking its path to promotion. In this position, White's c6 pawn is a passed pawn — no Black pawns (b6 and c7) can block its path forward.
 
@@ -50,13 +61,15 @@ Nimzowitsch's rule: "A passed pawn is a criminal which should be kept under lock
 Creating passed pawns:
 - Pawn majorities: 3v2 or 2v1 on one side of the board
 - Undermining: attacking the base of a pawn chain
-- Pawn breaks: advancing to force trades that leave a passed pawn`,
+- Pawn breaks: advancing to force trades that leave a passed pawn
+
+The lesson: passed pawns are the ultimate strategic weapon. In the endgame, a passed pawn on the 7th rank is often worth a rook. Learn to create them and to blockade them.`,
     },
     {
       title: "Weaknesses: Doubled, Isolated, and Backward Pawns",
       type: "key-idea",
-      content: `1. Doubled Pawns: Two pawns on the same file. 
-- Cannot protect each other 
+      content: `1. Doubled Pawns: Two pawns on the same file.
+- Cannot protect each other
 - Control fewer squares than connected pawns
 - Are vulnerable to frontal attack
 - However, doubled pawns can open a file for a rook (partial compensation)
@@ -72,7 +85,9 @@ Creating passed pawns:
 - Often becomes a target for enemy pieces
 - The square directly in front of a backward pawn is a classic outpost
 
-The common theme: structural pawn weaknesses are permanent. Pieces can be redeployed, but a weak pawn structure stays weak for the rest of the game. This is why strong players are so careful about pawn moves in the opening.`,
+The common theme: structural pawn weaknesses are permanent. Pieces can be redeployed, but a weak pawn structure stays weak for the rest of the game. This is why strong players are so careful about pawn moves in the opening.
+
+The lesson: identify your opponent's pawn weaknesses and target them. A doubled, isolated, or backward pawn is a permanent target. Pieces placed on the weak squares in front of these pawns can become permanent outposts.`,
     },
   ],
 };

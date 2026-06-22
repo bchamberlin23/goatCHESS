@@ -7,7 +7,7 @@ export const spaceAdvantage: LearnTopic = {
   description:
     "Controlling more space gives your pieces better squares and restricts the opponent. Learn how to gain, use, and fight against a space advantage.",
   difficulty: "intermediate",
-  estimatedMinutes: 10,
+  estimatedMinutes: 12,
   icon: "mdi:arrow-expand-all",
   tags: ["space", "development", "tempo", "center", "cramp"],
   sections: [
@@ -25,6 +25,7 @@ The opposite — being cramped — means your pieces get in each other's way, yo
     {
       title: "Gaining Space in the Opening",
       type: "position",
+      interactionMode: "freeplay",
       fen: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
       content: `How to gain space in the opening:
 1. Occupy the center with pawns (e4, d4 for White; d5, e5 for Black)
@@ -38,7 +39,9 @@ Common mistakes that give away space:
 - Moving the same piece multiple times in the opening
 - Exchanging a developed piece for an undeveloped one
 - Passive piece placement (knights on the rim, bishops blocked by own pawns)
-- Premature flank pawn moves that don't fight for the center`,
+- Premature flank pawn moves that don't fight for the center
+
+The lesson: in the opening, prioritize central pawns and piece development. Each pawn move in the center gains space; each flank pawn move usually gives the opponent counterplay. The goal: a developed, centralized army with room to maneuver.`,
     },
     {
       title: "The Principle of Two Weaknesses",
@@ -58,7 +61,7 @@ The corollary for the defender: When facing a space disadvantage, trade pieces. 
     {
       title: "Development & Tempo",
       type: "key-idea",
-      content: `Development means bringing pieces from their starting squares to active positions. Tempo means time — each move that develops a piece or creates a threat is a tempo gained. 
+      content: `Development means bringing pieces from their starting squares to active positions. Tempo means time — each move that develops a piece or creates a threat is a tempo gained.
 
 Key development principles:
 1. Knights before bishops (knights have fewer good squares early)

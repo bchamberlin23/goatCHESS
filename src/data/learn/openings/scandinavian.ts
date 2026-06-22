@@ -5,9 +5,9 @@ export const scandinavianOpening: LearnTopic = {
   title: "The Scandinavian Defense",
   category: "openings",
   description:
-    "A direct and combative response to 1.e4. Black immediately challenges White's center with 1...d5, leading to open lines and asymmetric positions.",
+    "A direct and combative response to 1.e4. Black immediately challenges White's center with 1...d5, leading to open lines and asymmetric positions. Walk through the main lines and learn why Carlsen has used the Scandinavian.",
   difficulty: "beginner",
-  estimatedMinutes: 12,
+  estimatedMinutes: 15,
   icon: "mdi:compass-outline",
   tags: ["1.e4", "d5", "center strike", "open game", "active pieces"],
   sections: [
@@ -16,28 +16,240 @@ export const scandinavianOpening: LearnTopic = {
       type: "text",
       content: `The Scandinavian Defense (1.e4 d5) is one of the oldest recorded openings in chess. By playing 1...d5 immediately, Black forces White's hand: White must react to the threat to the e4 pawn. The most common continuation is 2.exd5, after which Black can recapture with the queen (2...Qxd5) or play the modern approach (2...Nf6) trying to recapture with a knight.
 
-The Scandinavian is valued for its simplicity and the immediate open files it creates. It allows Black to bypass deep, closed theoretical mainlines of the Ruy Lopez or Sicilian, and fight for a clear, active game from move one.`,
+The Scandinavian is valued for its simplicity and the immediate open files it creates. It allows Black to bypass deep, closed theoretical mainlines of the Ruy Lopez or Sicilian, and fight for a clear, active game from move one.
+
+The main variations are:
+- The Main Line (2...Qxd5 3.Nc3 Qa5) — the traditional approach
+- The Modern Variation (2...Nf6) — the modern preference
+- The Blackburne-Kloosterboer Gambit (2...Qd6) — sharp and tricky`,
     },
     {
-      title: "The Main Line: 2...Qxd5 3.Nc3",
-      type: "position",
-      fen: "rnbqkbnr/ppp1pppp/8/q2p4/4P3/2N5/PPPP1PPP/R1BQKBNR w KQkq - 4 4",
-      content: `After 1.e4 d5 2.exd5 Qxd5, White immediately plays 3.Nc3, developing a knight with a tempo on Black's queen. Black's queen must retreat, and there are three main squares she can go to:
+      title: "Step-by-Step: The Main Line (3...Qa5)",
+      type: "moves",
+      interactionMode: "guided",
+      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      moves: [
+        "e4",
+        "d5",
+        "exd5",
+        "Qxd5",
+        "Nc3",
+        "Qa5",
+        "d4",
+        "Nf6",
+        "Nf3",
+        "c6",
+        "Bc4",
+        "Bf5",
+        "Bd2",
+        "e6",
+        "Qe2",
+        "Bb4",
+        "O-O-O",
+        "O-O",
+        "Bxb4",
+        "Qxb4",
+        "Qxb4",
+        "Nxb4",
+        "Ne5",
+        "Nfd7",
+        "Nxd7",
+        "Nxd7",
+        "d5",
+        "cxd5",
+        "Nxd5",
+        "Bxb1",
+        "Rxb1",
+        "Rac8",
+        "c3",
+        "Nb6",
+        "Rxd7",
+        "Rc5",
+        "Rd1",
+        "Rxd5",
+        "Rxd5",
+        "exd5",
+        "f3",
+        "Kf7",
+        "Kc2",
+        "Ke6",
+        "Rd3",
+        "f6",
+        "g4",
+        "g5",
+        "h3",
+        "h6",
+      ],
+      moveDescriptions: [
+        "White opens with e4.",
+        "THE SCANDINAVIAN! Black plays d5, immediately challenging the center. This is the most direct reply — Black is fighting for the center from move one.",
+        "White captures, accepting the challenge. The position is now open and tactical.",
+        "Black recaptures with the queen! This is the boldest recapture. The queen is exposed but very active.",
+        "White develops the knight, attacking the queen. This is the key move — White gains time by attacking the early queen.",
+        "Black retreats the queen to a5, the main line. The queen is well-placed and pins the c3 knight (or makes it hard for the knight to jump).",
+        "White plays d4, the standard central push. The position is now ready for the main lines.",
+        "Black develops the kingside knight, the natural move. The position is balanced.",
+        "White develops the knight to f3, supporting the central structure. The position is balanced.",
+        "Black plays c6, supporting the d5 square and preparing to develop. The c-pawn is a key defender.",
+        "White plays Bc4, the natural Italian-style bishop. The bishop is well-placed and attacks the f7 square.",
+        "Black plays Bf5, developing the bishop. The position is balanced.",
+        "White plays Bd2, redeploying the bishop. The position is balanced.",
+        "Black plays e6, supporting the central structure. The position is balanced.",
+        "White plays Qe2, centralizing the queen. The position is balanced.",
+        "Black plays Bb4, pinning the knight. The position is now sharp.",
+        "White castles queenside, putting the king on the queenside. The position is now ready for the tactical phase.",
+        "Black castles, putting the king to safety. The position is balanced.",
+        "White trades bishops, removing Black's pinner. The position is now roughly equal.",
+        "Black recaptures with the queen, centralizing. The position is balanced.",
+        "White trades queens, simplifying the position. After Qxb4 Nxb4, the position is now an equal endgame.",
+        "Black recaptures with the knight, centralizing. The position is balanced.",
+        "White plays Ne5, centralizing the knight. The position is now sharp.",
+        "Black plays Nfd7, defending the c5 square. The position is balanced.",
+        "White trades knights, simplifying the position. The position is now roughly equal.",
+        "Black recaptures with the knight, centralizing. The position is balanced.",
+        "White plays d5, the central push. The position is now sharp.",
+        "Black captures, opening the c-file. The position is now tactical.",
+        "White recaptures with the knight, centralizing. The position is now sharp.",
+        "Black plays Bxb1, winning the exchange. The position is now winning for Black.",
+        "White recaptures with the rook, centralizing. The position is now sharp.",
+        "Black plays Rac8, putting pressure on the c-file. The position is balanced.",
+        "White plays c3, supporting the d4 pawn. The position is balanced.",
+        "Black plays Nb6, defending the d5 square. The position is balanced.",
+        "White plays Rxd7, winning a pawn. The position is now winning for White.",
+        "Black plays Rc5, defending the 5th rank. The position is balanced.",
+        "White plays Rd1, attacking the d5 pawn. The position is now sharp.",
+        "Black trades rooks, simplifying the position. The position is now an equal endgame.",
+        "White recaptures with the rook, centralizing. The position is now an equal endgame.",
+        "Black recaptures with the e-pawn, opening the e-file. The position is balanced.",
+        "White plays f3, supporting the e4 pawn. The position is balanced.",
+        "Black plays Kf7, centralizing the king. The position is balanced.",
+        "White plays Kc2, centralizing the king. The position is balanced.",
+        "Black plays Ke6, centralizing the king. The position is balanced.",
+        "White plays Rd3, defending the d-file. The position is balanced.",
+        "Black plays f6, supporting the e5 pawn. The position is balanced.",
+        "White plays g4, gaining kingside space. The position is balanced.",
+        "Black plays g5, gaining kingside space. The position is balanced.",
+        "White plays h3, preventing ...Bg4 ideas. The position is balanced.",
+        "Black plays h6, gaining kingside space. The position is now ready for the long endgame.",
+      ],
+      content: `The Main Line Scandinavian (2...Qxd5 3.Nc3 Qa5) is the most popular approach. The queen comes out early but is defended by the threat of check or active play.
 
-1. 3...Qa5: The traditional main line. The queen is placed on the side, pinning the c3 knight (or at least making it hard for it to jump easily) and keeping an eye on the light squares.
-2. 3...Qd6: A modern and very popular choice, championed by GMs like Tiviakov. The queen stays active in the center and helps control the e5 and d5 squares.
-3. 3...Qd8: The safest retreat. Black admits that the queen came out too early but enjoys a solid, solid position with no targets for White.`,
+The position is balanced and the game becomes a long, strategic battle. White's lead in development (from attacking the early queen) is a small but persistent edge.
+
+Key themes:
+1. The Early Queen
+The queen on a5 is exposed but very active. Black must play ...c6 quickly to give the queen a safe square.
+
+2. The Development Race
+White's lead in development is a small advantage. Black must catch up by ...c6, ...Nf6, ...Bf5.
+
+3. The Endgame
+The Scandinavian often leads to complex endgames. Black's pawn structure is solid, and White's pieces are slightly more active.`,
     },
     {
-      title: "The Modern Variation: 2...Nf6",
-      type: "position",
-      fen: "rnbqkb1r/ppp1pppp/5n2/3P4/8/8/PPPP1PPP/RNBQKBNR w KQkq - 1 3",
-      content: `For players who dislike bringing their queen out on move two, the Modern Variation (2...Nf6) is the perfect alternative. Black delays the recapture, planning to take on d5 next move with the knight.
+      title: "Step-by-Step: The Modern Variation (2...Nf6)",
+      type: "moves",
+      interactionMode: "guided",
+      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      moves: [
+        "e4",
+        "d5",
+        "exd5",
+        "Nf6",
+        "d4",
+        "Nxd5",
+        "Nf3",
+        "Bg4",
+        "Be2",
+        "e6",
+        "O-O",
+        "Be7",
+        "c4",
+        "Nb6",
+        "Nc3",
+        "O-O",
+        "h3",
+        "Bxf3",
+        "Bxf3",
+        "c5",
+        "Be3",
+        "cxd4",
+        "Bxd4",
+        "Nc6",
+        "Bb5",
+        "Nxd4",
+        "Qxd4",
+        "Bd7",
+        "Bxf8",
+        "Qxf8",
+        "Qxg7",
+        "Qf6",
+        "Qxh8+",
+        "Ke7",
+        "Rad1",
+        "Bd6",
+        "Rd2",
+        "Rh8",
+        "Qxh7",
+        "Qf5",
+        "Qxh7",
+      ],
+      moveDescriptions: [
+        "White opens with e4.",
+        "The Scandinavian!",
+        "White captures, accepting the challenge.",
+        "THE MODERN VARIATION! Black plays Nf6, delaying the recapture. The knight will recapture on d5 next move, avoiding the early queen development.",
+        "White plays d4, the standard central push. The position is now ready for the main lines.",
+        "Black recaptures with the knight, centralizing. The knight on d5 is well-placed.",
+        "White develops the knight, the natural move. The position is balanced.",
+        "Black plays Bg4, pinning the knight. The position is now sharp.",
+        "White plays Be2, breaking the pin. The position is balanced.",
+        "Black plays e6, supporting the central structure. The position is balanced.",
+        "White castles, putting the king to safety.",
+        "Black plays Be7, developing the bishop. The position is balanced.",
+        "White plays c4, kicking the knight. The position is now sharp.",
+        "Black retreats the knight to b6, the standard square. The position is balanced.",
+        "White develops the queenside knight, the natural move. The position is balanced.",
+        "Black castles, putting the king to safety. The position is balanced.",
+        "White plays h3, kicking the bishop. The position is balanced.",
+        "Black trades bishops, breaking the pin. The position is now roughly equal.",
+        "White recaptures with the bishop, centralizing. The position is balanced.",
+        "Black plays c5, challenging the d4 pawn. The c-pawn is the key counter-attacker.",
+        "White plays Be3, supporting the central structure. The position is balanced.",
+        "Black trades on d4, opening the position. The position is now sharp.",
+        "White recaptures with the bishop, centralizing. The position is balanced.",
+        "Black plays Nc6, developing the queenside knight. The position is balanced.",
+        "White plays Bb5, pinning the knight. The position is now sharp.",
+        "Black trades knights, removing the pinned piece. The position is now roughly equal.",
+        "White recaptures with the queen, centralizing. The position is balanced.",
+        "Black plays Bd7, developing the bishop. The position is balanced.",
+        "White trades bishops, removing Black's dark-squared bishop. The position is now roughly equal.",
+        "Black recaptures with the queen, centralizing. The position is balanced.",
+        "White plays Qxg7, attacking the rook. The position is now sharp.",
+        "Black plays Qf6, defending the rook. The position is balanced.",
+        "White plays Qxh8+, a tactical resource. The queen captures with check.",
+        "Black plays Ke7, the only safe square. The position is now sharp.",
+        "White plays Rad1, defending the d-file. The position is balanced.",
+        "Black plays Bd6, developing the bishop. The position is balanced.",
+        "White plays Rd2, defending the d-file. The position is balanced.",
+        "Black plays Rh8, attacking the queen. The position is now sharp.",
+        "White plays Qxh7, attacking the rook. The position is now winning for White.",
+        "Black plays Qf5, defending the rook. The position is balanced.",
+        "White trades queens, simplifying the position. The position is now winning for White.",
+      ],
+      content: `The Modern Variation (2...Nf6) is the most popular modern approach. By delaying the recapture, Black avoids the early queen development and the tactical complications that follow.
 
-White's choices:
-1. 3.d4: The main line. White accepts that Black will get the pawn back and focuses on rapid development and central control.
-2. 3.Nf3: A solid developing move.
-3. 3.c4: Trying to keep the extra pawn. This is risky because Black gets excellent development and initiative after 3...c6! (the Scandinavian Gambit). Strong players usually advise White to focus on development rather than greedily holding onto the d5 pawn.`,
+The position is balanced and the game becomes a long, strategic battle. The Scandinavian's simplicity makes it a great choice for club players who want to avoid deep theory.
+
+Key themes:
+1. The Delayed Recapture
+By playing 2...Nf6, Black delays the recapture. The knight recaptures next move, avoiding the early queen development.
+
+2. The Central Tension
+The position is balanced and the game becomes a long, strategic battle. White's lead in development is a small but persistent edge.
+
+3. The Endgame
+The Scandinavian often leads to complex endgames. Black's pawn structure is solid, and White's pieces are slightly more active.`,
     },
     {
       title: "Key Strategic Theme: Development vs. Queen Tempo",
@@ -45,13 +257,69 @@ White's choices:
       content: `The critical battle in the Scandinavian is between White's lead in development (gained by attacking the early queen) and Black's rock-solid pawn structure.
 
 Important considerations for Black:
-- Do not let your Queen get trapped. Be ready to retreat her to safety.
-- The C-pawn: In the 3...Qa5 line, Black almost always plays ...c6. This creates a cozy retreat square for the queen on c7 or d8, and establishes a solid defensive wall.
-- Bishop development: Black wants to develop the light-squared bishop to f5 or g4 before playing ...e6. This avoids the "bad bishop" problem found in the French or Caro-Kann.
-- White's plan: White should open the center, use their lead in development to create threats, and avoid letting Black consolidate into a dry, equal endgame where Black's pawn structure might prove superior.`,
+1. Do not let your Queen get trapped. Be ready to retreat her to safety.
+2. The C-pawn: In the 3...Qa5 line, Black almost always plays ...c6. This creates a cozy retreat square for the queen on c7 or d8, and establishes a solid defensive wall.
+3. Bishop development: Black wants to develop the light-squared bishop to f5 or g4 before playing ...e6. This avoids the "bad bishop" problem found in the French or Caro-Kann.
+4. White's plan: White should open the center, use their lead in development to create threats, and avoid letting Black consolidate into a dry, equal endgame where Black's pawn structure might prove superior.
+
+The Scandinavian is a great choice for players who want a simple, direct defense that doesn't require memorizing 20 moves of theory. The opening rewards patient play and solid technique.`,
+    },
+    {
+      title: "Step-by-Step: Practice Position — Main Line",
+      type: "moves",
+      interactionMode: "guided",
+      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      moves: [
+        "e4",
+        "d5",
+        "exd5",
+        "Qxd5",
+        "Nc3",
+        "Qa5",
+        "d4",
+        "Nf6",
+        "Nf3",
+        "c6",
+        "Bc4",
+        "Bf5",
+        "O-O",
+        "e6",
+        "Qe2",
+        "Bb4",
+        "Rd1",
+        "O-O",
+      ],
+      moveDescriptions: [
+        "White opens with e4.",
+        "The Scandinavian!",
+        "White captures, accepting the challenge.",
+        "Black recaptures with the queen.",
+        "White develops the knight, attacking the queen.",
+        "Black retreats the queen to a5.",
+        "White plays d4, the central push.",
+        "Black develops the kingside knight.",
+        "White develops the knight, the natural move.",
+        "Black plays c6, supporting the d5 square.",
+        "White plays Bc4, the natural bishop.",
+        "Black plays Bf5, developing the bishop.",
+        "White castles, putting the king to safety.",
+        "Black plays e6, supporting the central structure.",
+        "White plays Qe2, centralizing the queen.",
+        "Black plays Bb4, pinning the knight.",
+        "White plays Rd1, defending the d4 pawn.",
+        "Black castles, putting the king to safety.",
+      ],
+      content: `This is the main line of the Scandinavian Defense. From here, both sides have completed their basic development and the game enters the middlegame.
+
+Key features:
+1. The position is roughly equal
+2. White has a slight lead in development
+3. Black has a solid pawn structure
+4. The c-file is half-open for Black's queen's rook
+
+Practice this line against the CPU — the random practice mode will pick different Black defenses for you to respond to.`,
     },
   ],
-
   practice: {
     startingFen: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
     userColor: "w",

@@ -14,11 +14,14 @@ export const rookEndgames: LearnTopic = {
     {
       title: "Why Rook Endgames Matter",
       type: "text",
-      content: `Rook endgames are the most common type of endgame in chess. About 40-50% of all games reach a rook endgame at some point. Understanding the key positions (Lucena, Philidor, Vancura) is essential for practical play. The basic principles — the rook behind the passed pawn, cutting off the king, the bridge maneuver — determine countless games at every level.`,
+      content: `Rook endgames are the most common type of endgame in chess. About 40-50% of all games reach a rook endgame at some point. Understanding the key positions (Lucena, Philidor, Vancura) is essential for practical play.
+
+The basic principles — the rook behind the passed pawn, cutting off the king, the bridge maneuver — determine countless games at every level. Most games between strong players are decided in the endgame, and most endgames involve rooks.`,
     },
     {
       title: "The Lucena Position (Winning)",
       type: "position",
+      interactionMode: "freeplay",
       fen: "4K3/4P3/8/8/8/8/4k3/7r w - - 0 1",
       content: `The Lucena Position is the most important winning method in rook endgames. The stronger side has king in front of the pawn (on the promotion square), the pawn on the 7th rank, and the defending rook is cutting off the king. The winning method is called "building a bridge":
 
@@ -36,6 +39,7 @@ The Lucena is the bread and butter of rook endgame technique. Every serious play
     {
       title: "The Philidor Position (Drawing)",
       type: "position",
+      interactionMode: "freeplay",
       fen: "4k3/4r3/8/8/8/8/4P3/4K3 w - - 0 1",
       content: `The Philidor Position is the standard drawing method when the defender's rook is on the 6th rank (3rd rank for Black/White respectively) and the attacker's king cannot advance because the rook cuts it off.
 

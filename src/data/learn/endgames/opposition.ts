@@ -7,7 +7,7 @@ export const opposition: LearnTopic = {
   description:
     "The opposition is the fundamental king maneuvering technique. Master direct, distant, and diagonal opposition, plus pawn breakthroughs.",
   difficulty: "intermediate",
-  estimatedMinutes: 10,
+  estimatedMinutes: 12,
   icon: "mdi:arrow-collapse",
   tags: ["opposition", "outflanking", "pawn breakthrough", "reserve tempi"],
   sections: [
@@ -21,6 +21,7 @@ This is the most fundamental king maneuvering concept in chess. It determines wh
     {
       title: "Direct Opposition",
       type: "position",
+      interactionMode: "freeplay",
       fen: "8/8/8/3k4/8/3K4/8/8 w - - 0 1",
       content: `Direct opposition: Kings face each other on the same file with one square between them. In this position, White (to move) does NOT have the opposition — Black has it. After 1.Ke3, Black replies 1...Ke5 and maintains the opposition. White cannot advance.
 
@@ -46,6 +47,7 @@ Reserve Tempi: In positions with multiple pawns, having extra pawn moves (reserv
     {
       title: "Pawn Breakthroughs",
       type: "position",
+      interactionMode: "freeplay",
       fen: "8/5ppp/5pk1/8/8/4PPP1/5PK1/8 w - - 0 1",
       content: `A pawn breakthrough is when a side creates a passed pawn through a sacrifice or exchange of pawns. The classic pawn breakthrough pattern:
 

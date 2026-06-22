@@ -14,6 +14,7 @@ import {
   IconButton,
   Paper,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
@@ -491,64 +492,242 @@ export default function LessonPage() {
                     position={fen}
                     boardWidth={boardWidth}
                     arePiecesDraggable={false}
-                    animationDuration={200}
+                    animationDuration={250}
                     customBoardStyle={{
                       borderRadius: "8px",
                       boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
                     }}
                   />
+                  {/* "Press → to start" callout on the board */}
+                  {viewMode === "lesson" &&
+                    interactionMode === "guided" &&
+                    hasMoves &&
+                    moveIndex === 0 && (
+                      <Box
+                        onClick={() => goToMove(1)}
+                        sx={{
+                          position: "absolute",
+                          inset: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          bgcolor: "rgba(0,0,0,0.45)",
+                          borderRadius: "8px",
+                          cursor: "pointer",
+                          transition: "background-color 0.2s",
+                          "&:hover": {
+                            bgcolor: "rgba(0,0,0,0.55)",
+                          },
+                        }}
+                      >
+                        <Stack
+                          alignItems="center"
+                          spacing={1.25}
+                          sx={{ color: "white", textAlign: "center", p: 2 }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 0.75,
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                px: 1,
+                                py: 0.5,
+                                border: "1.5px solid rgba(255,255,255,0.6)",
+                                borderRadius: 1,
+                                fontSize: "0.85rem",
+                                fontWeight: 700,
+                                fontFamily: "monospace",
+                                lineHeight: 1,
+                              }}
+                            >
+                              ←
+                            </Box>
+                            <Box
+                              sx={{
+                                px: 1,
+                                py: 0.5,
+                                border: "1.5px solid rgba(255,255,255,0.6)",
+                                borderRadius: 1,
+                                fontSize: "0.85rem",
+                                fontWeight: 700,
+                                fontFamily: "monospace",
+                                lineHeight: 1,
+                                bgcolor: "rgba(201,169,110,0.3)",
+                                borderColor: "#C9A96E",
+                                color: "#C9A96E",
+                                boxShadow: "0 0 0 3px rgba(201,169,110,0.15)",
+                              }}
+                            >
+                              →
+                            </Box>
+                          </Box>
+                          <Typography
+                            fontSize="0.9rem"
+                            fontWeight={700}
+                            sx={{ maxWidth: 240 }}
+                          >
+                            Press → to start the walkthrough
+                          </Typography>
+                          <Typography
+                            fontSize="0.72rem"
+                            sx={{ opacity: 0.7, maxWidth: 240 }}
+                          >
+                            Use arrow keys or the buttons below to step through
+                            each move with an explanation
+                          </Typography>
+                        </Stack>
+                      </Box>
+                    )}
                 </Box>
 
                 {/* Board controls */}
                 <Stack
                   direction="row"
-                  spacing={1}
+                  spacing={1.25}
                   alignItems="center"
                   flexWrap="wrap"
                   useFlexGap
                   justifyContent="center"
                 >
-                  {/* Lesson: guided mode arrows */}
+                  {/* Lesson: guided mode walkthrough */}
                   {viewMode === "lesson" &&
                     interactionMode === "guided" &&
                     hasMoves && (
                       <>
-                        <IconButton
-                          size="small"
-                          onClick={() => goToMove(0)}
-                          disabled={moveIndex === 0}
+                        <Tooltip title="Jump to start">
+                          <span>
+                            <IconButton
+                              onClick={() => goToMove(0)}
+                              disabled={moveIndex === 0}
+                              sx={{
+                                bgcolor: (t: any) =>
+                                  t.palette.mode === "dark"
+                                    ? "rgba(255,255,255,0.05)"
+                                    : "rgba(0,0,0,0.04)",
+                                "&:hover": {
+                                  bgcolor: (t: any) =>
+                                    t.palette.mode === "dark"
+                                      ? "rgba(201,169,110,0.15)"
+                                      : "rgba(201,169,110,0.1)",
+                                },
+                                "&.Mui-disabled": { opacity: 0.3 },
+                              }}
+                            >
+                              <Icon icon="mdi:skip-previous" width={22} />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                        <Tooltip title="Previous move (←)">
+                          <span>
+                            <IconButton
+                              onClick={() => goToMove(moveIndex - 1)}
+                              disabled={moveIndex === 0}
+                              sx={{
+                                bgcolor: (t: any) =>
+                                  t.palette.mode === "dark"
+                                    ? "rgba(255,255,255,0.05)"
+                                    : "rgba(0,0,0,0.04)",
+                                "&:hover": {
+                                  bgcolor: (t: any) =>
+                                    t.palette.mode === "dark"
+                                      ? "rgba(201,169,110,0.15)"
+                                      : "rgba(201,169,110,0.1)",
+                                },
+                                "&.Mui-disabled": { opacity: 0.3 },
+                              }}
+                            >
+                              <Icon icon="mdi:chevron-left" width={28} />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            px: 1.5,
+                            py: 0.75,
+                            borderRadius: 1.5,
+                            bgcolor: (t: any) =>
+                              t.palette.mode === "dark"
+                                ? "rgba(201,169,110,0.1)"
+                                : "rgba(201,169,110,0.08)",
+                            border: "1px solid",
+                            borderColor: (t: any) =>
+                              t.palette.mode === "dark"
+                                ? "rgba(201,169,110,0.25)"
+                                : "rgba(201,169,110,0.2)",
+                            minWidth: 70,
+                            textAlign: "center",
+                          }}
                         >
-                          <Icon icon="mdi:skip-backward" width={20} />
-                        </IconButton>
-                        <IconButton
-                          size="small"
-                          onClick={() => goToMove(moveIndex - 1)}
-                          disabled={moveIndex === 0}
-                        >
-                          <Icon icon="mdi:chevron-left" width={22} />
-                        </IconButton>
-                        <Typography
-                          color="text.secondary"
-                          fontSize="0.82rem"
-                          fontWeight={700}
-                          sx={{ minWidth: 56, textAlign: "center" }}
-                        >
-                          {moveIndex}/{movesLength}
-                        </Typography>
-                        <IconButton
-                          size="small"
-                          onClick={() => goToMove(moveIndex + 1)}
-                          disabled={moveIndex >= movesLength}
-                        >
-                          <Icon icon="mdi:chevron-right" width={22} />
-                        </IconButton>
-                        <IconButton
-                          size="small"
-                          onClick={() => goToMove(movesLength)}
-                          disabled={moveIndex >= movesLength}
-                        >
-                          <Icon icon="mdi:skip-forward" width={20} />
-                        </IconButton>
+                          <Typography
+                            color="#C9A96E"
+                            fontSize="0.82rem"
+                            fontWeight={800}
+                            letterSpacing="0.02em"
+                          >
+                            {moveIndex} / {movesLength}
+                          </Typography>
+                        </Paper>
+                        <Tooltip title="Next move (→)">
+                          <span>
+                            <IconButton
+                              onClick={() => goToMove(moveIndex + 1)}
+                              disabled={moveIndex >= movesLength}
+                              sx={{
+                                bgcolor: (t: any) =>
+                                  t.palette.mode === "dark"
+                                    ? "rgba(201,169,110,0.18)"
+                                    : "rgba(201,169,110,0.15)",
+                                border: "1px solid",
+                                borderColor: (t: any) =>
+                                  t.palette.mode === "dark"
+                                    ? "rgba(201,169,110,0.35)"
+                                    : "rgba(201,169,110,0.3)",
+                                color: "#C9A96E",
+                                "&:hover": {
+                                  bgcolor: (t: any) =>
+                                    t.palette.mode === "dark"
+                                      ? "rgba(201,169,110,0.28)"
+                                      : "rgba(201,169,110,0.25)",
+                                },
+                                "&.Mui-disabled": {
+                                  opacity: 0.3,
+                                  bgcolor: "transparent",
+                                  borderColor: "transparent",
+                                },
+                              }}
+                            >
+                              <Icon icon="mdi:chevron-right" width={28} />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                        <Tooltip title="Jump to end">
+                          <span>
+                            <IconButton
+                              onClick={() => goToMove(movesLength)}
+                              disabled={moveIndex >= movesLength}
+                              sx={{
+                                bgcolor: (t: any) =>
+                                  t.palette.mode === "dark"
+                                    ? "rgba(255,255,255,0.05)"
+                                    : "rgba(0,0,0,0.04)",
+                                "&:hover": {
+                                  bgcolor: (t: any) =>
+                                    t.palette.mode === "dark"
+                                      ? "rgba(201,169,110,0.15)"
+                                      : "rgba(201,169,110,0.1)",
+                                },
+                                "&.Mui-disabled": { opacity: 0.3 },
+                              }}
+                            >
+                              <Icon icon="mdi:skip-next" width={22} />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
                       </>
                     )}
 
@@ -750,9 +929,23 @@ export default function LessonPage() {
                   <Typography
                     fontWeight={700}
                     fontSize="0.85rem"
-                    sx={{ mb: 1 }}
+                    sx={{
+                      mb: 1,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                    }}
                   >
-                    Move Sequence — click any move to jump
+                    <Icon icon="mdi:format-list-numbered" width={16} />
+                    Move Sequence
+                    <Typography
+                      component="span"
+                      color="text.secondary"
+                      fontSize="0.7rem"
+                      fontWeight={500}
+                    >
+                      — click any move to jump
+                    </Typography>
                   </Typography>
                   <Stack
                     direction="row"
@@ -805,13 +998,48 @@ export default function LessonPage() {
                       );
                     })}
                   </Stack>
-                  <Typography
-                    color="text.secondary"
-                    fontSize="0.68rem"
-                    sx={{ mt: 1 }}
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={0.5}
+                    sx={{ mt: 1, color: "text.secondary" }}
                   >
-                    Tip: use ← → arrow keys to step through moves
-                  </Typography>
+                    <Icon icon="mdi:keyboard-outline" width={14} />
+                    <Typography fontSize="0.7rem" fontWeight={500}>
+                      Tip: use{" "}
+                      <Box
+                        component="span"
+                        sx={{
+                          fontFamily: "monospace",
+                          bgcolor: (t: any) =>
+                            t.palette.mode === "dark"
+                              ? "rgba(255,255,255,0.08)"
+                              : "rgba(0,0,0,0.06)",
+                          px: 0.5,
+                          borderRadius: 0.5,
+                          fontWeight: 700,
+                        }}
+                      >
+                        ←
+                      </Box>{" "}
+                      <Box
+                        component="span"
+                        sx={{
+                          fontFamily: "monospace",
+                          bgcolor: (t: any) =>
+                            t.palette.mode === "dark"
+                              ? "rgba(255,255,255,0.08)"
+                              : "rgba(0,0,0,0.06)",
+                          px: 0.5,
+                          borderRadius: 0.5,
+                          fontWeight: 700,
+                        }}
+                      >
+                        →
+                      </Box>{" "}
+                      arrow keys to step through moves
+                    </Typography>
+                  </Stack>
                 </Paper>
               )}
 
@@ -894,32 +1122,68 @@ export default function LessonPage() {
                       sx={{
                         bgcolor: (t: any) =>
                           t.palette.mode === "dark"
-                            ? "rgba(201,169,110,0.08)"
-                            : "rgba(201,169,110,0.06)",
-                        border: "1px solid rgba(201,169,110,0.2)",
+                            ? "rgba(201,169,110,0.1)"
+                            : "rgba(201,169,110,0.08)",
+                        border: "1px solid rgba(201,169,110,0.3)",
+                        borderLeft: "4px solid #C9A96E",
                         borderRadius: 2,
-                        p: 2,
+                        p: 2.25,
                       }}
                     >
-                      <Stack spacing={1}>
-                        <Typography
-                          fontWeight={700}
-                          fontSize="0.8rem"
-                          color="#C9A96E"
-                        >
-                          Move {moveIndex}:{" "}
+                      <Stack spacing={1.25}>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                          <Box
+                            sx={{
+                              px: 0.85,
+                              py: 0.35,
+                              bgcolor: "#C9A96E",
+                              color: "#1a1a1a",
+                              borderRadius: 1,
+                              fontSize: "0.7rem",
+                              fontWeight: 800,
+                              letterSpacing: "0.04em",
+                            }}
+                          >
+                            MOVE {moveIndex} / {movesLength}
+                          </Box>
                           <PrettyMoveSan
                             san={section.moves![moveIndex - 1]}
                             color={moveIndex % 2 === 1 ? "w" : "b"}
                             typographyProps={{
-                              fontSize: "0.85rem",
+                              fontSize: "1rem",
                               fontWeight: 800,
                             }}
                           />
-                        </Typography>
-                        <Typography fontSize="0.85rem" lineHeight={1.6}>
+                        </Stack>
+                        <Typography fontSize="0.92rem" lineHeight={1.65}>
                           {section.moveDescriptions[moveIndex - 1]}
                         </Typography>
+                        {moveIndex < movesLength && (
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={0.5}
+                            sx={{ pt: 0.5, color: "text.secondary" }}
+                          >
+                            <Icon icon="mdi:lightbulb-outline" width={14} />
+                            <Typography fontSize="0.72rem" fontWeight={500}>
+                              Press → to continue
+                            </Typography>
+                          </Stack>
+                        )}
+                        {moveIndex === movesLength && (
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={0.5}
+                            sx={{ pt: 0.5, color: "#74b038" }}
+                          >
+                            <Icon icon="mdi:check-circle" width={14} />
+                            <Typography fontSize="0.72rem" fontWeight={600}>
+                              Walkthrough complete — try the next section
+                            </Typography>
+                          </Stack>
+                        )}
                       </Stack>
                     </Paper>
                   )}

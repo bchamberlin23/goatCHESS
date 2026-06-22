@@ -29,7 +29,7 @@ Both of these tactics frequently involve sacrifices, where you give up material 
       moveDescriptions: [
         "White plays the stunning Queen sacrifice Qb8!!, putting the queen en prise but threatening back rank mate.",
         "Black captures the queen. But this rook, which was defending the back rank, has now been deflected!",
-        "Checkmate! With the rook deflected, White's rook delivers a back rank mate on d8."
+        "Checkmate! With the rook deflected, White's rook delivers a back rank mate on d8.",
       ],
       content: `In this classic deflection puzzle, White's rook on d1 wants to deliver a back-rank mate on d8, but the square is defended by Black's rook on d8.
 
@@ -48,7 +48,7 @@ By playing 1.Qb8!!, White deflects Black's rook or queen.
         "Forced. The king has no other legal moves and must capture the rook on h8.",
         "Fork! The knight jumps to f7, checking the king and attacking the queen on d6.",
         "The king escapes check, moving back to safety.",
-        "The knight captures the queen. White has successfully won a queen for a rook."
+        "The knight captures the queen. White has successfully won a queen for a rook.",
       ],
       content: `A decoy tactic lures a piece to a bad square. In this position, White wants to fork the Black king and queen with Nxf7+, but the f7 square is defended by the king, and the king is currently safe on g8.
 
@@ -61,7 +61,8 @@ White plays 1.Rh8+!!, decoying the king onto the vulnerable h8 square. After 1..
       orientation: "white",
       quizFen: "6k1/1R4p1/5p1p/3r4/1B1N4/4P1P1/r4PKP/8 w - - 0 1",
       quizAnswer: ["Ne6"],
-      quizHint: "Look for a knight move that attacks a crucial defending pawn on g7, exploiting Black's overloaded rook.",
+      quizHint:
+        "Look for a knight move that attacks a crucial defending pawn on g7, exploiting Black's overloaded rook.",
       content: `Black's pieces are currently holding their position, but the pawn on g7 is a key defender of the black king.
 
 Find the move that deflects Black's defenses and allows White to build an unstoppable attack.`,

@@ -33,7 +33,7 @@ The winning technique requires the queen to coordinate with her king. Because th
         "Ke1",
         "Qe3",
         "Kd1",
-        "Kg2"
+        "Kg2",
       ],
       moveDescriptions: [
         "White starts with Qe5+, checking the black king.",
@@ -46,7 +46,7 @@ The winning technique requires the queen to coordinate with her king. Because th
         "Black moves to e1, the only square to defend the d2 pawn.",
         "White plays Qe3+, forcing the king to block its own pawn.",
         "Black is forced to play ...Kd1, blocking the d2 pawn's promotion path.",
-        "Crucial tempo! Because the pawn is blocked, White has one free turn to bring the king closer with Kg2."
+        "Crucial tempo! Because the pawn is blocked, White has one free turn to bring the king closer with Kg2.",
       ],
       content: `This sequence demonstrates the core winning method. By checking the king and gradually tightening the net, the queen forces the black king onto d1 (directly in front of the pawn). 
 
@@ -72,7 +72,8 @@ Understanding these exceptions is vital: if you are defending, try to exchange p
       orientation: "white",
       quizFen: "8/8/8/8/4Q3/6K1/3p4/3k4 w - - 0 1",
       quizAnswer: ["Qd3"],
-      quizHint: "Find the queen move that blockades the d2 pawn while staying safe from the Black king.",
+      quizHint:
+        "Find the queen move that blockades the d2 pawn while staying safe from the Black king.",
       content: `The Black pawn is on d2, ready to promote on d1. The White king is too far away to help.
 
 Find the most precise move for White to immediately block the pawn's advance and prepare the winning march of the White king.`,

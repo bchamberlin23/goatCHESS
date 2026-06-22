@@ -7,7 +7,7 @@ export const doubleCheck: LearnTopic = {
   description:
     "Two powerful tactical concepts: the double check forces the king to move, and deflection removes key defenders. Both are essential for advanced combinations.",
   difficulty: "intermediate",
-  estimatedMinutes: 8,
+  estimatedMinutes: 10,
   icon: "mdi:flash-alert",
   tags: ["double check", "deflection", "decoy", "removal of defender"],
   sections: [
@@ -23,8 +23,9 @@ Decoy: Luring a piece to a square where it becomes vulnerable. A common example:
 Both are about manipulating enemy pieces — deflection moves them away from where they're needed; decoy moves them to where they're wanted.`,
     },
     {
-      title: "The Classic Deflection Pattern",
+      title: "Example: The Classic Deflection Pattern",
       type: "position",
+      interactionMode: "freeplay",
       fen: "3r2k1/5ppp/8/8/8/2Q5/5PPP/4R1K1 w - - 0 1",
       content: `In this position, White has a rook on e1 and queen on c3. Black's king is on g8, defended by the rook on d8. White plays 1.Qc8+!! — a queen sacrifice that deflects the rook. After 1...Rxc8, the rook is no longer defending the back rank, and 2.Re8# is checkmate.
 
@@ -47,7 +48,9 @@ Key rules for deflection:
 
 4. Defensive Deflection: Just as you can deflect enemy pieces, you must also anticipate when your own pieces can be deflected. Keep defensive pieces flexible — a piece with only one job is vulnerable to deflection.
 
-5. The Zwischenzug Connection: Deflection often works as a zwischenzug (intermediate move). Before recapturing or responding to a threat, first deflect a key defender, then proceed.`,
+5. The Zwischenzug Connection: Deflection often works as a zwischenzug (intermediate move). Before recapturing or responding to a threat, first deflect a key defender, then proceed.
+
+The lesson: deflection and decoy are about manipulating enemy pieces. The key skill: identifying the critical defender and finding a way to remove it from its defensive duty. The forcing move (sacrifice or check) is usually the tool, and the combination follows immediately.`,
     },
   ],
 };

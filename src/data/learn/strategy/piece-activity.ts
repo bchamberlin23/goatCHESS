@@ -7,7 +7,7 @@ export const pieceActivity: LearnTopic = {
   description:
     "An inactive piece is a useless piece. Learn how to evaluate piece activity, find optimal squares, and coordinate your army for maximum effectiveness.",
   difficulty: "intermediate",
-  estimatedMinutes: 10,
+  estimatedMinutes: 12,
   icon: "mdi:run-fast",
   tags: [
     "piece activity",
@@ -27,6 +27,7 @@ Steinitz's accumulation theory: Accumulate small advantages (better piece placem
     {
       title: "Knight Outposts",
       type: "position",
+      interactionMode: "freeplay",
       fen: "r1bq1rk1/ppp2ppp/2np1n2/4p3/2BPP3/2N2N2/PPP2PPP/R1BQ1RK1 b - - 0 1",
       content: `A knight outpost is a square where a knight cannot be attacked by enemy pawns and controls key squares. The ideal knight outpost is:
 1. Protected by a friendly pawn
@@ -66,7 +67,9 @@ The "Tall Pawn" concept: A bishop that controls a long open diagonal is like a "
 
 4. Rook Behind Passed Pawns: In the endgame, rooks belong behind passed pawns — both your own (to support the advance) and the opponent's (to blockade).
 
-5. The Tarrasch Rule: "Rooks belong behind passed pawns." This is one of the most important endgame principles. A rook behind its own passed pawn pushes it forward; a rook behind the enemy passed pawn holds it back.`,
+5. The Tarrasch Rule: "Rooks belong behind passed pawns." This is one of the most important endgame principles. A rook behind its own passed pawn pushes it forward; a rook behind the enemy passed pawn holds it back.
+
+The lesson: piece activity is the foundation of all chess strategy. A well-coordinated army is more powerful than a material advantage. Always look for ways to improve your worst-placed piece — that's where the strategic gains are.`,
     },
   ],
 };

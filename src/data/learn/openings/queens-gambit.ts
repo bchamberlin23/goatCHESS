@@ -5,58 +5,301 @@ export const queensGambit: LearnTopic = {
   title: "The Queen's Gambit",
   category: "openings",
   description:
-    "The most classical of all d4 openings. Learn the QGD, the Slav, the Semi-Slav, and the many ways both sides fight for the center.",
+    "The most classical of all d4 openings. Learn the QGD, the Slav, the Semi-Slav, and the many ways both sides fight for the center. Walk through the main lines move by move.",
   difficulty: "intermediate",
-  estimatedMinutes: 20,
+  estimatedMinutes: 25,
   icon: "mdi:chess-queen",
   tags: ["1.d4", "d5", "c4", "classical", "slav", "QGD"],
   sections: [
     {
       title: "Introduction",
       type: "text",
-      content: `The Queen's Gambit begins 1.d4 d5 2.c4 and is one of the cornerstones of classical chess. Despite the name, it's not a true gambit — if Black captures on c4, White can usually recover the pawn. The opening was brought to mainstream attention by the Netflix series of the same name, but it has been a top-level staple for over a century. The key battle is for control of the center: White challenges d5 with c4, and Black must choose how to respond.`,
-    },
-    {
-      title: "Queen's Gambit Declined (2...e6)",
-      type: "position",
-      fen: "rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
-      content: `The QGD (2...e6) is the most solid and classical reply. Black defends the d5 pawn and develops naturally. White typically continues 3.Nc3 Nf6. The main variations include:
+      content: `The Queen's Gambit begins 1.d4 d5 2.c4 and is one of the cornerstones of classical chess. Despite the name, it's not a true gambit — if Black captures on c4, White can usually recover the pawn. The opening was brought to mainstream attention by the Netflix series of the same name, but it has been a top-level staple for over a century.
 
-- Exchange Variation (4.cxd5 exd5 5.Bg5): White creates a symmetrical pawn structure with a slight space advantage.
-- Orthodox Defense (4.Bg5 Be7 5.e3 O-O 6.Nf3): The classical main line used by Capablanca and Alekhine.
-- Tartakower Defense (4.Bg5 Be7 5.e3 O-O 6.Nf3 h6 7.Bh4 b6): Black fianchettoes the light-squared bishop.
-- Lasker Defense (4.Bg5 Be7 5.e3 O-O 6.Nf3 h6 7.Bh4 Ne4): Black exchanges pieces for equality.
-- Tarrasch Defense (3...c5): An aggressive approach giving Black an isolated d-pawn but active piece play.`,
-    },
-    {
-      title: "The Slav Defense (2...c6)",
-      type: "position",
-      fen: "rnbqkbnr/pp2pppp/2p5/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
-      content: `The Slav (2...c6) is the most popular reply at the top level today. By playing ...c6 instead of ...e6, Black defends d5 without blocking the light-squared bishop.
+The key battle is for control of the center: White challenges d5 with c4, and Black must choose how to respond.
 
-Main Variations:
-- Main Line Slav: 3.Nf3 Nf6 4.Nc3 dxc4 5.a4 Bf5 6.e3 e6 7.Bxc4 — both sides have solid positions.
-- Exchange Slav: 3.cxd5 cxd5 — symmetrical but White has a slight edge due to the move.
-- Semi-Slav: 3.Nf3 Nf6 4.Nc3 e6 5.Bg5 h6 6.Bh4 — one of the most complex openings in chess, leading to the Botvinnik, Meran, and Anti-Meran systems.`,
+The three main defenses are:
+- The Queen's Gambit Declined (2...e6) — the most classical and solid
+- The Slav Defense (2...c6) — the most popular at the top level today
+- The Queen's Gambit Accepted (2...dxc4) — Black takes the pawn and tries to hold it
+
+We'll walk through the key variations of each.`,
     },
     {
-      title: "Queen's Gambit Accepted (2...dxc4)",
-      type: "position",
-      fen: "rnbqkbnr/ppp1pppp/8/8/2pP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
-      content: `2...dxc4 accepts the gambit pawn. White typically recovers the pawn with 3.e3 or 3.e4 (the latter is more aggressive but riskier). After 3.e3, the main line continues 3...e5 4.Bxc4 exd4 5.exd4 with a small White advantage. Black should not play 2...dxc4 3.e3 b5? to hold the pawn because after 4.a4, White gets a very strong attack — the pawn is not worth the ruined queenside structure.`,
+      title: "Step-by-Step: The Queen's Gambit Declined",
+      type: "moves",
+      interactionMode: "guided",
+      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      moves: [
+        "d4",
+        "d5",
+        "c4",
+        "e6",
+        "Nc3",
+        "Nf6",
+        "Bg5",
+        "Be7",
+        "e3",
+        "O-O",
+        "Nf3",
+        "Nbd7",
+        "Rc1",
+        "c6",
+        "Bd3",
+        "dxc4",
+        "Bxc4",
+        "b5",
+        "Bd3",
+        "Bb7",
+        "O-O",
+        "b4",
+        "Ne4",
+        "Nxe4",
+        "Bxe7",
+        "Qxe7",
+        "Bxh7+",
+        "Kxh7",
+        "Ng5+",
+        "Kg8",
+        "Qf3",
+        "Qf6",
+        "Qxf6",
+        "gxf6",
+        "Nxh7",
+        "Kf8",
+        "Nxf6",
+      ],
+      moveDescriptions: [
+        "White opens with the queen's pawn — the most flexible first move. The d-pawn controls e5 and c5, the two most important central squares.",
+        "Black mirrors with d5, fighting for the center. This is the classical response — Black refuses to give up the central tension.",
+        "THE QUEEN'S GAMBIT! White challenges the d5 pawn with c4. The gambit threatens to take on d5, and if Black takes on c4, White will play e3 to win the pawn back.",
+        "The QGD! Black plays e6, defending the d5 pawn and developing the bishop. This is the most solid and classical response. Black's structure will be e6-d5, a strong but somewhat passive center.",
+        "White develops the queenside knight, defending the d4 pawn and supporting the central structure. The knight is heading for a strong square.",
+        "Black develops the kingside knight, attacking the c4 pawn. This is the natural response — the knight eyes the central squares.",
+        "White pins the knight to the queen, preventing ...Nbd7 ideas. The pin is annoying for Black and will be a long-term feature of the position.",
+        "Black plays Be7, breaking the pin while keeping the bishop active. The bishop is well-placed on the natural square.",
+        "White plays e3, supporting the d4 pawn and preparing to recapture on c4 if Black takes. This is the standard QGD setup — solid and patient.",
+        "Black castles, putting the king to safety. The QGD is famous for slow maneuvering, and castling early is part of that plan.",
+        "White develops the kingside knight, completing the natural development. The knight defends d4 and supports the central structure.",
+        "Black plays Nbd7, defending the b6 square and supporting the c5 break. From d7, the knight is a useful defender.",
+        "White plays Rc1, supporting the c4 pawn. The rook is well-placed and ready to support the central breaks.",
+        "Black plays c6, supporting the d5 pawn. This is the main line — the d5 pawn is now defended three times (c6, e6, Nf6).",
+        "White plays Bd3, redeploying the bishop to the natural diagonal. The bishop supports the e4 break.",
+        "Black trades on c4, accepting the gambit pawn. This is the main line — Black takes the pawn and tries to hold it.",
+        "White recaptures, restoring the material balance. The position is now roughly equal.",
+        "Black plays b5, kicking the bishop and gaining queenside space. This is the standard plan — Black tries to create counterplay on the queenside.",
+        "White retreats the bishop to d3, the natural square. The bishop remains active and points at h7.",
+        "Black develops the bishop to b7, adding another piece to the queenside counterplay. The bishop is well-placed on the long diagonal.",
+        "White castles, completing development. The position is now ready for the long middlegame.",
+        "Black plays b4, attacking the knight and gaining more queenside space. This is a sharp move — Black is willing to weaken the c4 square.",
+        "White plays the strong Ne4, centralizing the knight. The knight on e4 is a monster — it eyes c5, d6, and f6.",
+        "Black trades knights, removing the powerful central piece.",
+        "White recaptures with the bishop, maintaining the strong central position.",
+        "Black recaptures with the queen, keeping the queenside pressure. The position is now highly tactical.",
+        "White plays the beautiful Bxh7+! A classic Greek gift sacrifice. The bishop sacrifices itself to expose the Black king.",
+        "Black is forced to capture with the king. The h7 square is now a hole in the Black king's position.",
+        "White plays Ng5+, attacking the king and the f7 square. This is the point of the sacrifice — the king is in grave danger.",
+        "Black plays Kg8, the only safe square. The king is forced to retreat into the center.",
+        "White plays Qf3, attacking the f7 pawn. The pressure is mounting.",
+        "Black plays Qf6, defending the f7 pawn and adding another defender. The position is sharp.",
+        "White trades queens, simplifying the position. After Qxf6 gxf6, the position is roughly equal but Black's king is exposed.",
+        "Black recaptures with the g-pawn, weakening the kingside. The structure is now damaged.",
+        "White plays Nxh7, attacking the rook. The knight is heading for f6, a powerful square.",
+        "Black plays Kf8, the only move to save the rook.",
+        "White plays Nxf6, threatening to take the rook and the bishop. The position is winning for White — Black is a whole piece down.",
+      ],
+      content: `The Queen's Gambit Declined is one of the deepest and most respected openings in chess. The Orthodox Variation (4.Bg5 Be7 5.e3 O-O 6.Nf3) has been the main line for over a century.
+
+The example game features a Greek gift sacrifice — one of the most famous tactical patterns in chess. When the opponent has castled kingside and the h7 square is undefended (because the bishop is on b7 or e7 instead of g7), a Bxh7+ sacrifice can be devastating.
+
+The lesson: even in slow, positional openings like the QGD, tactical opportunities are everywhere. The Greek gift shows that a slow opening can suddenly explode into tactics.`,
+    },
+    {
+      title: "Step-by-Step: The Slav Defense",
+      type: "moves",
+      interactionMode: "guided",
+      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      moves: [
+        "d4",
+        "d5",
+        "c4",
+        "c6",
+        "Nf3",
+        "Nf6",
+        "Nc3",
+        "dxc4",
+        "a4",
+        "Bf5",
+        "e3",
+        "e6",
+        "Bxc4",
+        "Bb4",
+        "O-O",
+        "O-O",
+        "Qe2",
+        "Nbd7",
+        "Rd1",
+        "a5",
+        "Nh4",
+        "Bg6",
+        "Nxg6",
+        "hxg6",
+        "Bd2",
+        "b6",
+        "Qf3",
+        "Bb7",
+        "Rac1",
+        "Qe7",
+        "Be1",
+        "Rfd8",
+        "Qf4",
+      ],
+      moveDescriptions: [
+        "White opens with d4.",
+        "Black mirrors with d5.",
+        "The Queen's Gambit!",
+        "THE SLAV DEFENSE! Black plays c6, supporting d5 without blocking the light-squared bishop. This is the most popular modern response — it gives Black a flexible position.",
+        "White develops the knight, supporting d4 and preparing to develop.",
+        "Black develops the kingside knight, attacking the c4 pawn. This is the natural response.",
+        "White defends the c4 pawn with the queenside knight. The position is now tense.",
+        "Black captures on c4, opening the position. This is the main Slav — Black gives up the center but gains piece activity.",
+        "White plays a4, preventing ...b5 expansion and gaining queenside space. This is a key idea in the Slav.",
+        "Black develops the bishop to f5, the natural Slav square. From f5, the bishop is active and supports the center.",
+        "White plays e3, supporting the d4 pawn and preparing to recapture on c4. The position is solid.",
+        "Black plays e6, supporting the d5 square and preparing to develop. The structure is flexible.",
+        "White recaptures on c4 with the bishop, restoring material. The bishop is well-placed on the long diagonal.",
+        "Black plays Bb4, pinning the knight and adding pressure. This is the sharp Slav setup.",
+        "White castles, putting the king to safety.",
+        "Black castles. Both kings are now safe and the position enters the middlegame.",
+        "White plays Qe2, supporting the central structure. The queen is well-placed and ready to move.",
+        "Black plays Nbd7, defending the b6 square and supporting the queenside counterplay. From d7, the knight is a useful defender.",
+        "White plays Rd1, supporting the d4 pawn. The rook is well-placed on the d-file.",
+        "Black plays a5, gaining queenside space. This is the standard Slav plan — push the queenside pawns.",
+        "White plays the thematic Nh4, attacking the bishop. The knight is heading for g6 or f5.",
+        "Black retreats the bishop to g6, the only safe square. The bishop is now less active.",
+        "White trades knights, removing the defender of h7.",
+        "Black recaptures with the h-pawn, weakening the kingside. The structure is now damaged.",
+        "White plays Bd2, redeploying the bishop to support the kingside. The bishop is heading for a more active square.",
+        "Black plays b6, supporting the a5 pawn. The position is balanced.",
+        "White plays Qf3, attacking the f7 square. The queen is now actively placed.",
+        "Black plays Bb7, developing the queenside bishop. The position is roughly equal.",
+        "White plays Rac1, putting the rook on the c-file. The position is now ready for the long middlegame.",
+        "Black plays Qe7, centralizing the queen. The position is balanced.",
+        "White plays Be1, rerouting the bishop to the kingside. The plan is to attack on the kingside.",
+        "Black plays Rfd8, doubling rooks on the d-file. The position is sharp.",
+        "White plays Qf4, attacking the f7 square and preparing to double rooks. The position is winning for White with the better structure.",
+      ],
+      content: `The Slav Defense is the most popular Black response to the Queen's Gambit at the top level today. The key idea: 2...c6 supports d5 without blocking the light-squared bishop, giving Black a flexible position.
+
+The main variations are:
+- The Main Line Slav: 3.Nf3 Nf6 4.Nc3 dxc4 5.a4 Bf5 6.e3 e6 7.Bxc4 (as shown above)
+- The Exchange Slav: 3.cxd5 cxd5 — symmetrical but with a slight White edge
+- The Semi-Slav: 3.Nf3 Nf6 4.Nc3 e6 5.Bg5 h6 6.Bh4 — one of the most complex openings in chess
+
+The Slav teaches a fundamental lesson: sometimes the best defense is one that doesn't block your own pieces. Compare with the QGD where ...e6 blocks the c8 bishop.`,
+    },
+    {
+      title: "Step-by-Step: Queen's Gambit Accepted",
+      type: "moves",
+      interactionMode: "guided",
+      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      moves: [
+        "d4",
+        "d5",
+        "c4",
+        "dxc4",
+        "Nf3",
+        "Nf6",
+        "e3",
+        "e6",
+        "Bxc4",
+        "c5",
+        "O-O",
+        "a6",
+        "Qe2",
+        "b5",
+        "Bb3",
+        "Bb7",
+        "Rd1",
+        "Nc6",
+        "Nc3",
+        "Be7",
+        "d5",
+        "exd5",
+        "Nxd5",
+        "Nxd5",
+        "Bxd5",
+        "Qxd5",
+        "Qf3",
+        "c4",
+        "Bc2",
+        "Rc8",
+        "Bd2",
+        "Qd6",
+        "Rac1",
+        "O-O",
+      ],
+      moveDescriptions: [
+        "White opens with d4.",
+        "Black mirrors with d5.",
+        "The Queen's Gambit!",
+        "QUEEN'S GAMBIT ACCEPTED! Black takes the pawn. The name 'gambit' is misleading — White can usually recover the pawn.",
+        "White develops the knight, supporting d4 and preparing to recapture on c4. The knight is heading for the natural square.",
+        "Black develops the kingside knight, attacking the c4 pawn. This is the natural response.",
+        "White plays e3, supporting the d4 pawn and preparing to recapture on c4. The position is solid.",
+        "Black plays e6, supporting the d5 square. The structure is now flexible.",
+        "White recaptures on c4 with the bishop, restoring material. The bishop is well-placed on the long diagonal.",
+        "Black plays c5, challenging the d4 pawn. This is the main line — Black fights for the center.",
+        "White castles, putting the king to safety.",
+        "Black plays a6, a useful waiting move. The pawn prevents Bb5+ ideas.",
+        "White plays Qe2, supporting the central structure. The queen is well-placed.",
+        "Black plays b5, kicking the bishop and gaining queenside space. This is the main line.",
+        "White retreats the bishop to b3, the natural square. The bishop is well-placed.",
+        "Black develops the bishop to b7, adding another piece to the queenside counterplay.",
+        "White plays Rd1, supporting the d4 pawn. The rook is well-placed.",
+        "Black develops the queenside knight, completing the natural development.",
+        "White develops the queenside knight, defending the central squares.",
+        "Black develops the bishop to e7, the natural square. The position is now balanced.",
+        "White plays d5, the central breakthrough. This is the key move — White is willing to sacrifice a pawn to open the position.",
+        "Black captures, opening the e-file. The position is now highly tactical.",
+        "White recaptures with the knight, centralizing. The knight on d5 is powerful.",
+        "Black trades knights, removing the central piece. The position is now roughly equal.",
+        "White recaptures with the bishop, maintaining the strong central position.",
+        "Black recaptures with the queen, centralizing. The position is now balanced.",
+        "White plays Qf3, attacking the f7 square. The queen is actively placed.",
+        "Black plays c4, advancing the queenside pawn. The position is sharp.",
+        "White plays Bc2, retreating the bishop. The position is balanced.",
+        "Black plays Rc8, putting pressure on the c-file. The position is sharp.",
+        "White plays Bd2, developing the bishop. The position is roughly equal.",
+        "Black plays Qd6, centralizing the queen. The position is balanced.",
+        "White plays Rac1, putting the rook on the c-file. The position is roughly equal.",
+        "Black castles, completing development. The endgame is now roughly equal.",
+      ],
+      content: `The Queen's Gambit Accepted is a fighting defense where Black takes the pawn and tries to hold it. The key idea: Black uses the extra tempo on the c-pawn to gain queenside counterplay.
+
+The QGA is sound but slightly passive — White has an easier time in the endgame because the bishop on c4 is strong. Modern theory gives White a small but persistent edge.
+
+The lesson: accepting a gambit is risky but can be sound if you have enough piece activity to compensate for the structural weakness. The QGA shows how to defend with active piece play even in a slightly worse position.`,
     },
     {
       title: "Key Strategic Ideas",
       type: "key-idea",
-      content: `1. The c4-cxd5 Decision: White must decide the right moment to capture on d5 — too early and Black equalizes; too late and Black gets a strong center.
+      content: `The Queen's Gambit is rich with strategic themes that recur across all variations:
 
-2. Black's Light-Squared Bishop: In the QGD, this is the "problem piece" stuck behind e6. Black must solve this (with ...b6, ...dxc4, or ...c5) or be strategically cramped.
+1. The c4-cxd5 Decision
+White must decide the right moment to capture on d5 — too early and Black equalizes; too late and Black gets a strong center. The timing of this capture is a key strategic decision.
 
-3. The Minority Attack: White's typical plan involves a minority attack on the queenside (b4-b5) supported by the heavy pieces.
+2. Black's Light-Squared Bishop
+In the QGD, this is the "problem piece" stuck behind e6. Black must solve this (with ...b6, ...dxc4, or ...c5) or be strategically cramped. The Slav avoids this issue entirely.
 
-4. Central Breaks: ...c5 (for Black) and e4 (for White) are the thematic central pawn breaks that determine the character of the middlegame.
+3. The Minority Attack
+White's typical plan involves a minority attack on the queenside (b4-b5) supported by the heavy pieces. This is one of the most beautiful strategic ideas in chess.
 
-5. Carlsbad Structure: After the Exchange Variation, the Carlsbad pawn structure (White: a2, b2, d4, e3, f2, g2, h2 vs Black: a7, b7, d5, e6, f7, g7, h7) is one of the most studied structures in chess.`,
+4. Central Breaks
+...c5 (for Black) and e4 (for White) are the thematic central pawn breaks that determine the character of the middlegame. Knowing when to play these breaks is essential.
+
+5. Carlsbad Structure
+After the Exchange Variation, the Carlsbad pawn structure (White: a2, b2, d4, e3, f2, g2, h2 vs Black: a7, b7, d5, e6, f7, g7, h7) is one of the most studied structures in chess. Endgames here are all about small advantages and patient maneuvering.`,
     },
   ],
 };
