@@ -195,11 +195,19 @@ function PlayerSummary({
 
       <MetricPill
         label="ACC"
-        value={accuracy === undefined ? "..." : `${accuracy.toFixed(1)}%`}
+        value={
+          accuracy !== undefined && Number.isFinite(accuracy)
+            ? `${accuracy.toFixed(1)}%`
+            : "..."
+        }
       />
       <MetricPill
         label="PERF"
-        value={estimatedElo === undefined ? "..." : Math.round(estimatedElo)}
+        value={
+          estimatedElo !== undefined && Number.isFinite(estimatedElo)
+            ? Math.round(estimatedElo)
+            : "..."
+        }
       />
     </Box>
   );

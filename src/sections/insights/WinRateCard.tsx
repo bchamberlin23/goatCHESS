@@ -80,8 +80,12 @@ export default function WinRateCard({ data }: WinRateCardProps) {
     [wins, draws, losses]
   );
 
-  const whiteAccuracy = data.accuracyByColor.white;
-  const blackAccuracy = data.accuracyByColor.black;
+  const whiteAccuracy = Number.isFinite(data.accuracyByColor.white)
+    ? data.accuracyByColor.white
+    : 0;
+  const blackAccuracy = Number.isFinite(data.accuracyByColor.black)
+    ? data.accuracyByColor.black
+    : 0;
 
   return (
     <Paper
@@ -277,6 +281,7 @@ function ColorStatCard({
   iconColor: string;
   isDark: boolean;
 }) {
+  const safeAccuracy = Number.isFinite(accuracy) ? accuracy : 0;
   return (
     <Box
       sx={{
@@ -326,7 +331,7 @@ function ColorStatCard({
           fontWeight={900}
           color={MAIN_THEME_COLOR}
         >
-          {accuracy.toFixed(1)}%
+          {safeAccuracy.toFixed(1)}%
         </Typography>
       </Box>
     </Box>

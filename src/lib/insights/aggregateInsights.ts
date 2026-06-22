@@ -159,7 +159,9 @@ const computeAccuracyTrend = (
     )
     .map((g, i) => ({
       date: g.date || `Game ${i + 1}`,
-      accuracy: Math.round(g.userAccuracy * 10) / 10,
+      accuracy: Number.isFinite(g.userAccuracy)
+        ? Math.round(g.userAccuracy * 10) / 10
+        : 0,
       gameIndex: i,
     }));
 };
@@ -178,14 +180,15 @@ const computeRatingTrend = (
         new Date(a.date || "").getTime() - new Date(b.date || "").getTime()
     )
     .map((g, i) => {
-      const actualRating =
-        g.userColor === "white"
-          ? g.game.white.rating || 0
-          : g.game.black.rating || 0;
+      const rawRating =
+        g.userColor === "white" ? g.game.white.rating : g.game.black.rating;
+      const rating = Number.isFinite(rawRating) ? (rawRating as number) : 0;
       return {
         date: g.date || `Game ${i + 1}`,
-        rating: actualRating,
-        estimatedElo: Math.round(g.userEstimatedElo),
+        rating,
+        estimatedElo: Number.isFinite(g.userEstimatedElo)
+          ? Math.round(g.userEstimatedElo)
+          : 0,
         gameIndex: i,
       };
     });
@@ -423,7 +426,9 @@ const computeOpeningStats = (games: InsightsGameResult[]): OpeningStat[] => {
     }
 
     openingMap[opening].count++;
-    openingMap[opening].accuracySum += g.userAccuracy;
+    if (Number.isFinite(g.userAccuracy)) {
+      openingMap[opening].accuracySum += g.userAccuracy;
+    }
 
     if (g.result === "win") openingMap[opening].wins++;
     else if (g.result === "draw") openingMap[opening].draws++;
@@ -493,7 +498,9 @@ const computeTimeControlStats = (
     }
 
     tcMap[label].count++;
-    tcMap[label].accuracySum += g.userAccuracy;
+    if (Number.isFinite(g.userAccuracy)) {
+      tcMap[label].accuracySum += g.userAccuracy;
+    }
 
     if (g.result === "win") tcMap[label].wins++;
     else if (g.result === "draw") tcMap[label].draws++;
@@ -553,8 +560,10 @@ const computePhaseAccuracy = (
         3.166924740191411;
       const accuracy = Math.min(100, Math.max(0, rawAccuracy + 1));
 
-      phaseData[phase].sum += accuracy;
-      phaseData[phase].count++;
+      if (Number.isFinite(accuracy)) {
+        phaseData[phase].sum += accuracy;
+        phaseData[phase].count++;
+      }
     }
   }
 
@@ -604,21 +613,9 @@ const computeAccuracyByColor = (
   const whiteGames = games.filter((g) => g.userColor === "white");
   const blackGames = games.filter((g) => g.userColor === "black");
 
-  const whiteAccuracy =
-    whiteGames.length > 0
-      ? whiteGames.reduce((sum, g) => sum + g.userAccuracy, 0) /
-        whiteGames.length
-      : 0;
-
-  const blackAccuracy =
-    blackGames.length > 0
-      ? blackGames.reduce((sum, g) => sum + g.userAccuracy, 0) /
-        blackGames.length
-      : 0;
-
   return {
-    white: round(whiteAccuracy),
-    black: round(blackAccuracy),
+    white: round(safeAvg(whiteGames.map((g) => g.userAccuracy))),
+    black: round(safeAvg(blackGames.map((g) => g.userAccuracy))),
   };
 };
 
@@ -721,7 +718,9 @@ const computeOpponentProfile = (
       bucket.count++;
       bucket.score += gameScore;
       bucket.expectedScore += gameExpectedScore;
-      bucket.accuracySum += game.userAccuracy;
+      if (Number.isFinite(game.userAccuracy)) {
+        bucket.accuracySum += game.userAccuracy;
+      }
       if (game.result === "win") bucket.wins++;
       else if (game.result === "draw") bucket.draws++;
       else bucket.losses++;
@@ -779,9 +778,7 @@ const computeOpponentProfile = (
 
 const computeAverageAccuracy = (games: InsightsGameResult[]): number => {
   if (games.length === 0) return 0;
-  return round(
-    games.reduce((sum, game) => sum + game.userAccuracy, 0) / games.length
-  );
+  return round(safeAvg(games.map((g) => g.userAccuracy)));
 };
 
 const computeScoreRate = (games: InsightsGameResult[]): number => {

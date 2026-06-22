@@ -109,16 +109,20 @@ function TimeControlCard({
   isDark: boolean;
 }) {
   const icon = getTimeControlIcon(stat.label);
+  const safeWinRate = Number.isFinite(stat.winRate) ? stat.winRate : 0;
+  const safeAvgAccuracy = Number.isFinite(stat.avgAccuracy)
+    ? stat.avgAccuracy
+    : 0;
   const winColor =
-    stat.winRate >= 60
+    safeWinRate >= 60
       ? "#22ac38"
-      : stat.winRate >= 45
+      : safeWinRate >= 45
         ? MAIN_THEME_COLOR
         : "#df5353";
   const accColor =
-    stat.avgAccuracy >= 80
+    safeAvgAccuracy >= 80
       ? "#22ac38"
-      : stat.avgAccuracy >= 60
+      : safeAvgAccuracy >= 60
         ? MAIN_THEME_COLOR
         : "#df5353";
 
@@ -193,7 +197,7 @@ function TimeControlCard({
             Win%
           </Typography>
           <Typography fontSize="0.85rem" fontWeight={900} color={winColor}>
-            {stat.winRate.toFixed(0)}%
+            {safeWinRate.toFixed(0)}%
           </Typography>
         </Box>
 
@@ -217,7 +221,7 @@ function TimeControlCard({
             Acc
           </Typography>
           <Typography fontSize="0.85rem" fontWeight={900} color={accColor}>
-            {stat.avgAccuracy.toFixed(1)}%
+            {safeAvgAccuracy.toFixed(1)}%
           </Typography>
         </Box>
       </Stack>

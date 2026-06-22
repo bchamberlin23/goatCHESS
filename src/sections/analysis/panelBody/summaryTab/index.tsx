@@ -436,9 +436,10 @@ function PlayerAccuracyCard({
   side: "white" | "black";
 }) {
   const isWhite = side === "white";
+  const safeAccuracy = Number.isFinite(accuracy) ? accuracy : 0;
   const radius = 28;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (accuracy / 100) * circumference;
+  const strokeDashoffset = circumference - (safeAccuracy / 100) * circumference;
 
   return (
     <Stack
@@ -548,7 +549,7 @@ function PlayerAccuracyCard({
             fontWeight={900}
             color={isWhite ? "#86c35a" : "#3894eb"}
           >
-            {accuracy.toFixed(0)}%
+            {safeAccuracy.toFixed(0)}%
           </Typography>
         </Box>
       </Box>

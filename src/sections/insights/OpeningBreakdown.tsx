@@ -181,14 +181,16 @@ function OpeningRow({
 }) {
   const [expanded, setExpanded] = useState(false);
   const handleToggle = useCallback(() => setExpanded((p) => !p), []);
-
-  const winPct = opening.winRate;
+  const winPct = Number.isFinite(opening.winRate) ? opening.winRate : 0;
+  const safeAvgAccuracy = Number.isFinite(opening.avgAccuracy)
+    ? opening.avgAccuracy
+    : 0;
   const winColor =
     winPct >= 60 ? "#22ac38" : winPct >= 45 ? MAIN_THEME_COLOR : "#df5353";
   const accColor =
-    opening.avgAccuracy >= 80
+    safeAvgAccuracy >= 80
       ? "#22ac38"
-      : opening.avgAccuracy >= 60
+      : safeAvgAccuracy >= 60
         ? MAIN_THEME_COLOR
         : "#df5353";
 
@@ -274,7 +276,7 @@ function OpeningRow({
           textAlign="right"
           color={accColor}
         >
-          {opening.avgAccuracy.toFixed(1)}%
+          {safeAvgAccuracy.toFixed(1)}%
         </Typography>
       </ButtonBase>
 
