@@ -74,10 +74,33 @@ The lesson: the Sicilian is a battle of long-term strategic ideas. The player wh
     },
     {
       title: "Step-by-Step: The Open Sicilian",
-      type: "position",
+      type: "moves",
       interactionMode: "guided",
       fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-
+      moves: [
+        "e4",
+        "c5",
+        "Nf3",
+        "d6",
+        "d4",
+        "cxd4",
+        "Nxd4",
+        "Nf6",
+        "Nc3",
+        "a6",
+      ],
+      moveDescriptions: [
+        "1. e4 — White plays the king's pawn, the most ambitious first move.",
+        "1...c5 — THE SICILIAN DEFENSE! Black plays the Sicilian, the most ambitious and popular defense to 1.e4.",
+        "2. Nf3 — White develops the knight, preparing to recapture on d4.",
+        "2...d6 — The Open Sicilian setup, preparing to recapture on d4 with the knight.",
+        "3. d4 — White plays the central break, challenging the c5 pawn.",
+        "3...cxd4 — Black accepts the challenge, opening the c-file and gaining the half-open c-file.",
+        "4. Nxd4 — White recaptures, now threatening to win the d6 pawn.",
+        "4...Nf6 — Black develops the knight, attacking the e4 pawn and preparing to castle.",
+        "5. Nc3 — White develops the queenside knight, the third knight developed.",
+        "5...a6 — THE NAJDORF VARIATION! Black plays the defining move, preparing flexible development.",
+      ],
       content: `This position is the starting point of the Najdorf Variation, the most popular and heavily analyzed line in all of chess. From here, the game branches into dozens of sub-variations, each with its own theory and strategic ideas.
 
 The key feature: Black has the a6 pawn, which prevents immediate Bb5+ ideas and gives Black a flexible setup. White's main options:
@@ -90,10 +113,36 @@ We'll explore the most popular of these next.`,
     },
     {
       title: "Step-by-Step: The Najdorf Main Line 6.Bg5",
-      type: "position",
+      type: "moves",
       interactionMode: "guided",
-      fen: "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 0 2",
-
+      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      moves: [
+        "e4",
+        "c5",
+        "Nf3",
+        "d6",
+        "d4",
+        "cxd4",
+        "Nxd4",
+        "Nf6",
+        "Nc3",
+        "a6",
+        "Bg5",
+        "e6",
+        "f4",
+        "Be7",
+        "Qf3",
+        "Qc7",
+      ],
+      moveDescriptions: [
+        "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 — The Najdorf setup.",
+        "6. Bg5 — The main line, the most popular and most analyzed continuation.",
+        "6...e6 — The standard response, preparing ...Nbd7 and ...Be7.",
+        "7. f4 — The Keres Attack setup, preparing kingside expansion.",
+        "7...Be7 — Black develops the bishop, preparing to castle.",
+        "8. Qf3 — The queen supports the kingside attack and eyes the a8-h1 diagonal.",
+        "8...Qc7 — The queen prepares ...b5 and supports the queenside counterplay.",
+      ],
       content: `This is the heart of the Najdorf main line — the Polugaevsky variation. The play is incredibly sharp: White sacrifices a knight for a kingside attack, and Black must find precise moves to survive.
 
 Key takeaways:
@@ -106,10 +155,33 @@ The Sicilian teaches a critical lesson: the best defenses don't play for equalit
     },
     {
       title: "Step-by-Step: The Dragon Variation",
-      type: "position",
+      type: "moves",
       interactionMode: "guided",
-      fen: "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 0 2",
-
+      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      moves: [
+        "e4",
+        "c5",
+        "Nf3",
+        "d6",
+        "d4",
+        "cxd4",
+        "Nxd4",
+        "Nf6",
+        "Nc3",
+        "g6",
+        "Be3",
+        "Bg7",
+        "f3",
+        "O-O",
+      ],
+      moveDescriptions: [
+        "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 — The Open Sicilian.",
+        "5...g6 — THE DRAGON! Black prepares the dark-squared bishop on the long diagonal.",
+        "6. Be3 — The Yugoslav Attack setup, the main line against the Dragon.",
+        "6...Bg7 — The bishop lands on the long diagonal, the key Dragon piece.",
+        "7. f3 — Supporting the e4 pawn and preparing the queenside castle.",
+        "7...O-O — Black castles, the Dragon setup is complete.",
+      ],
       content: `The Dragon Variation is the most aggressive response in the Sicilian. Black's signature move is ...g6 followed by ...Bg7, putting the dark-squared bishop on the long diagonal.
 
 The Dragon was a favorite of Bobby Fischer and Garry Kasparov. Kasparov used it to defeat Karpov in multiple world championship games, and the line remains popular at all levels.
