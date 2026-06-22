@@ -109,8 +109,8 @@ For beginners, the Italian is the better choice. The positions are clearer, the 
     },
     {
       title: "Step-by-Step: Main Line Setup 1.e4 e5 2.Nf3 Nc6 3.Bc4",
-      type: "moves",
-      interactionMode: "guided",
+      type: "position",
+      interactionMode: "freeplay",
       fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       moves: ["e4", "e5", "Nf3", "Nc6", "Bc4"],
       moveDescriptions: [

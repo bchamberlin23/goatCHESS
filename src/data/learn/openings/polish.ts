@@ -83,8 +83,8 @@ The Polish is not for everyone. If you prefer sharp, tactical positions, you may
     },
     {
       title: "Step-by-Step: Main Line Setup 1.b4 e5 2.Bb2",
-      type: "moves",
-      interactionMode: "guided",
+      type: "position",
+      interactionMode: "freeplay",
       fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       moves: ["b4", "e5", "Bb2"],
       moveDescriptions: [
@@ -330,8 +330,8 @@ Trap 5: The Knight on e7
     },
     {
       title: "Model Game 1: Sokolsky vs Struchkov, 1963",
-      type: "moves",
-      interactionMode: "guided",
+      type: "position",
+      interactionMode: "freeplay",
       fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       moves: [
         "b4",
@@ -399,8 +399,8 @@ The lesson: when Black plays passively or greedily, the Polish can be devastatin
     },
     {
       title: "Model Game 2: Karpov vs Miles, 1980",
-      type: "moves",
-      interactionMode: "guided",
+      type: "position",
+      interactionMode: "freeplay",
       fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       moves: [
         "b4",
