@@ -25,13 +25,8 @@ The key idea: the knight's unique movement allows it to cover the squares diagon
     },
     {
       title: "Step-by-Step: The Classic Pattern",
-      type: "moves",
-      interactionMode: "guided",
+      type: "position",
       fen: "1r5k/5N2/8/8/8/8/8/5R1K w - - 0 1",
-      moves: ["Rh7+"],
-      moveDescriptions: [
-        "Rh7# — the rook delivers checkmate on the h-file. The Black king on h8 has no escape because: (1) the knight on f7 covers both g8 and h7 — wait, g8 is not covered by f7. Let me use the correct position.",
-      ],
       content:
         "The classic Anastasia's Mate requires the knight to be on f6 (not f7), so that it covers both g8 and h7. Let me show the correct position.",
     },

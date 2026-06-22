@@ -23,14 +23,8 @@ Both of these tactics frequently involve sacrifices, where you give up material 
     },
     {
       title: "Deflection: Removing the Guard",
-      type: "moves",
+      type: "position",
       fen: "3r2k1/p1Q2ppp/1p2p3/1q6/8/8/5PPP/3R2K1 w - - 0 1",
-      moves: ["Qb8", "Rxb8", "Rxd8"],
-      moveDescriptions: [
-        "White plays the stunning Queen sacrifice Qb8!!, putting the queen en prise but threatening back rank mate.",
-        "Black captures the queen. But this rook, which was defending the back rank, has now been deflected!",
-        "Checkmate! With the rook deflected, White's rook delivers a back rank mate on d8.",
-      ],
       content: `In this classic deflection puzzle, White's rook on d1 wants to deliver a back-rank mate on d8, but the square is defended by Black's rook on d8.
 
 By playing 1.Qb8!!, White deflects Black's rook or queen. 
