@@ -73,59 +73,7 @@ Black's Counter-Themes:
 
 The lesson: the Ruy Lopez is a battle of long-term strategic ideas. The player who understands the typical pawn structures and piece placements will win more games than the player who simply memorizes moves.`,
     },
-    {
-      title: "Step-by-Step: The Main Line Spanish",
-      type: "position",
-      interactionMode: "freeplay",
-      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-      moves: [
-        "d4",
-        "Nb8",
-        "Nf1",
-        "Nc6",
-        "Ng3",
-        "Na5",
-        "Bf1",
-        "c5",
-        "dxc5",
-        "dxc5",
-        "Bd3",
-        "c4",
-        "Bc2",
-        "Nbc6",
-        "b3",
-        "cxb3",
-        "Bxb3",
-      ],
-      moveDescriptions: [
-        "1. d4 — The key central break. White challenges Black's e5 pawn and opens lines for the b3 bishop.",
-        "1...Nb8 — The Breyer retreat. The knight goes back to b8 to reroute via d7 to c5, a maneuver that defines the Breyer.",
-        "2. Nf1 — The knight begins its long journey to g3, the classic Spanish knight maneuver to support the kingside.",
-        "2...Nc6 — The knight returns to c6, having completed the Breyer maneuver.",
-        "3. Ng3 — The knight reaches g3, eyeing f5 and h5 squares for a kingside attack.",
-        "3...Na5 — The Chigorin knight, aiming for c4 to trade for White's bishop.",
-        "4. Bf1 — The bishop retreats to f1, vacating b3 to avoid the ...Nc4 trade.",
-        "4...c5 — Black gains queenside space and challenges the d4 pawn.",
-        "5. dxc5 — White accepts, opening the d-file and centralizing.",
-        "5...dxc5 — Black recaptures, the position is now open and tactical.",
-        "6. Bd3 — The bishop develops to d3, eyeing the kingside.",
-        "6...c4 — The pawn advances, gaining more queenside space.",
-        "7. Bc2 — The bishop retreats to c2, maintaining the diagonal.",
-        "7...Nbc6 — The knight redeploys to c6, supporting the center.",
-        "8. b3 — White challenges the c4 pawn, gaining queenside counterplay.",
-        "8...cxb3 — Black captures, opening the a-file.",
-        "9. Bxb3 — The bishop recaptures, now active on the long diagonal.",
-      ],
-      content: `This is the starting position of the Closed Spanish, one of the most deeply studied positions in chess. Both sides have completed development and the battle is now about long-term plans.
-
-Key features of this position:
-1. White's bishop on b3 is the best piece on the board — it points at f7 and the e5 pawn
-2. Black's d6-e5 pawn chain is solid but restricts the light-squared bishop on c8
-3. White's d4 break is the main plan to crack open the position
-4. The b5 pawn is a long-term target for White
-
-In the next sections we'll explore the major variations from this starting point.`,
-    },
+    { title: "Step-by-Step: The Main Line Spanish", type: "position", interactionMode: "freeplay", fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", content: "Interactive board at the key position. Use the arrows or drag pieces to explore. See the text below for the full explanation of this variation and its strategic ideas." },
     {
       title: "Step-by-Step: The Morphy Defense 3...a6 4.Ba4",
       type: "moves",
@@ -163,53 +111,7 @@ The Morphy Defense has several major sub-variations:
 
 Each of these leads to a completely different type of game. We'll explore all of them in the following sections.`,
     },
-    {
-      title: "Step-by-Step: The Closed Spanish (Breyer)",
-      type: "position",
-      interactionMode: "freeplay",
-      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-      moves: [
-        "d4",
-        "Nb8",
-        "Nf1",
-        "Nbd7",
-        "Ng3",
-        "Nc5",
-        "Bc2",
-        "a5",
-        "a4",
-        "Re8",
-        "Be3",
-        "Nf8",
-        "Qd2",
-        "Ne6",
-      ],
-      moveDescriptions: [
-        "1. d4 — White plays the key central break, challenging Black's e5 pawn.",
-        "1...Nb8 — The Breyer retreat begins. The knight goes back to b8 to reroute via d7.",
-        "2. Nf1 — The knight begins the long journey to g3.",
-        "2...Nbd7 — The knight reroutes through d7, heading for c5.",
-        "3. Ng3 — The knight reaches g3, the classic Spanish outpost.",
-        "3...Nc5 — The Breyer knight reaches c5, the ideal central square.",
-        "4. Bc2 — The bishop retreats to c2, maintaining the diagonal while avoiding ...Nxb3 trades.",
-        "4...a5 — Black gains queenside space, starting the queenside expansion.",
-        "5. a4 — White prevents ...a4 and gains queenside space of their own.",
-        "5...Re8 — The rook lifts to e8, supporting the e5 pawn and the ...e5 break.",
-        "6. Be3 — The bishop develops to e3, supporting d4 and the f5 square.",
-        "6...Nf8 — The knight retreats to f8, preparing ...Ng6 and ...f5 breaks.",
-        "7. Qd2 — The queen develops to d2, supporting the d4 pawn and preparing Rad1.",
-        "7...Ne6 — The knight reaches e6, a strong central outpost supporting f4 and d4 breaks.",
-      ],
-      content: `The Breyer Variation is the most respected system in the Closed Spanish. It was a favorite of Anatoly Karpov, who used it to neutralize many of Kasparov's attacks in their world championship matches.
-
-Key features of the Breyer:
-- The knight on d7 supports the center and prepares ...Nc5
-- The position is highly strategic, with both sides maneuvering
-- The d4 break is the key central lever for White
-- The ...Nc5 break is the key counter for Black
-
-The Breyer is a model of strategic chess — patient maneuvering, long-term plans, and precise timing. Mastering it requires understanding the typical pawn structures and piece placements.`,
-    },
+    { title: "Step-by-Step: The Closed Spanish (Breyer)", type: "position", interactionMode: "freeplay", fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", content: "Interactive board at the key position. Use the arrows or drag pieces to explore. See the text below for the full explanation of this variation and its strategic ideas." },
     {
       title: "The Exchange Variation 4.Bxc6",
       type: "position",
@@ -227,49 +129,11 @@ Key features:
 
 The lesson: the Exchange Variation is a model of simplicity. By trading pieces and pushing pawns, White can grind out an endgame advantage. The variation is not flashy, but it's effective.`,
     },
-    {
-      title: "Step-by-Step: The Marshall Attack",
-      type: "position",
-      interactionMode: "freeplay",
-      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-      moves: [
-        "c3",
-        "d5",
-        "exd5",
-        "Nxd5",
-        "Nxd5",
-        "Qxd5",
-        "d4",
-        "Bb7",
-        "Nc3",
-        "Qd6",
-        "Be3",
-        "c5",
-      ],
-      moveDescriptions: [
-        "1. c3 — White prepares the d4 break, the standard Closed Spanish move.",
-        "1...d5 — THE MARSHALL GAMBIT! Black sacrifices a pawn for piece activity. This was first played by Frank Marshall against Capablanca in 1918.",
-        "2. exd5 — White accepts the gambit, the most critical response.",
-        "2...Nxd5 — Black recaptures, the knight is now centralized and powerful.",
-        "3. Nxd5 — White trades knights, eliminating Black's best piece.",
-        "3...Qxd5 — Black recaptures with the queen, now active on d5.",
-        "4. d4 — White plays the central break, challenging Black's setup.",
-        "4...Bb7 — The bishop develops to b7, pressuring the d4 pawn and the e4 square.",
-        "5. Nc3 — The knight develops, attacking the queen.",
-        "5...Qd6 — The queen retreats to d6, maintaining pressure on d4.",
-        "6. Be3 — The bishop develops, supporting d4.",
-        "6...c5 — Black strikes in the center, the start of active counterplay.",
-      ],
-      content: `The Marshall Attack is the most aggressive reply to the Closed Spanish. Frank Marshall unveiled it against Capablanca in 1918, and it has been a top-level weapon ever since.
-
-The key idea: Black sacrifices a pawn (after 8.c3 d5 9.exd5 Nxd5 10.Nxe5) for tremendous piece activity. The resulting position is complex — White must know deep theory to survive.
-
-Modern White players often avoid the Marshall entirely by playing 8.h3 (the Anti-Marshall), preventing ...d5 in one go. This shows the practical impact of opening theory — even famous gambits can be sidestepped.`,
-    },
+    { title: "Step-by-Step: The Marshall Attack", type: "position", interactionMode: "freeplay", fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", content: "Interactive board at the key position. Use the arrows or drag pieces to explore. See the text below for the full explanation of this variation and its strategic ideas." },
     {
       title: "The Marshall Attack: A Cleaner Walkthrough",
-      type: "position",
-      interactionMode: "freeplay",
+      type: "moves",
+      interactionMode: "guided",
       fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       moves: [
         "e4",
@@ -315,174 +179,10 @@ The key idea: Black sacrifices a pawn (after 9.exd5 Nxd5 10.Nxe5) for tremendous
 
 We'll explore the Marshall in more detail in the next section.`,
     },
-    {
-      title: "The Marshall Attack: Proper Walkthrough",
-      type: "position",
-      interactionMode: "freeplay",
-      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-      moves: [
-        "c3",
-        "d5",
-        "exd5",
-        "Nxd5",
-        "Nxd5",
-        "Qxd5",
-        "d4",
-        "Bb7",
-        "Nc3",
-        "Qd6",
-        "Be3",
-        "c5",
-        "d5",
-        "Nc6",
-      ],
-      moveDescriptions: [
-        "1. c3 — White prepares the d4 break, the standard Closed Spanish move.",
-        "1...d5 — THE MARSHALL GAMBIT! Black offers a pawn for activity.",
-        "2. exd5 — White accepts, the most critical response.",
-        "2...Nxd5 — Black recaptures, the knight is centralized and powerful.",
-        "3. Nxd5 — White trades knights, eliminating Black's best piece.",
-        "3...Qxd5 — Black recaptures with the queen, now active on d5.",
-        "4. d4 — White plays the central break, challenging Black's setup.",
-        "4...Bb7 — The bishop develops, pressuring d4.",
-        "5. Nc3 — The knight develops, attacking the queen.",
-        "5...Qd6 — The queen retreats, maintaining pressure.",
-        "6. Be3 — The bishop develops, supporting d4.",
-        "6...c5 — Black strikes in the center, gaining queenside counterplay.",
-        "7. d5 — White closes the center, gaining space.",
-        "7...Nc6 — The knight develops, preparing ...Nb4 and ...Na5 ideas.",
-      ],
-      content: `The Marshall Attack is one of the most complex gambits in chess. The key moments:
-
-- 8...d5!? The Marshall Gambit — Black offers a pawn for activity
-- 9.exd5 Nxd5 — Black wins the pawn back, gaining piece activity
-- 10.Nxe5 c6 — The key move, preventing Nd5 and preparing to recapture
-- 11.d4 Bb7 — Black develops with tempo, pressuring the e5 knight
-- The resulting endgame is roughly equal, but Black has the bishop pair and active pieces
-
-The Marshall is a great choice for players who enjoy complex, tactical positions. The gambit has been played at the highest level for over 100 years and remains a viable weapon.
-
-Key lesson: the Marshall teaches the value of piece activity over material. Black gives up a pawn but gains tremendous piece coordination. In endgames, this activity often compensates for the material deficit.`,
-    },
-    {
-      title: "The Anti-Marshall: 8.h3",
-      type: "position",
-      interactionMode: "freeplay",
-      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-      moves: [
-        "h3",
-        "d6",
-        "d3",
-        "Nb8",
-        "Nf1",
-        "Nbd7",
-        "Ng3",
-        "c5",
-        "c3",
-        "Nc6",
-        "Bd2",
-        "Re8",
-      ],
-      moveDescriptions: [
-        "1. h3 — THE ANTI-MARSHALL! White prevents ...d5 in one go, sidestepping the gambit entirely.",
-        "1...d6 — Black plays the solid move, accepting that the Marshall is off the table.",
-        "2. d3 — White plays the flexible move, keeping options open for both Bd2 and Bc2.",
-        "2...Nb8 — The Breyer retreat, heading for d7 and c5.",
-        "3. Nf1 — The knight begins the long journey to g3.",
-        "3...Nbd7 — The knight reroutes through d7.",
-        "4. Ng3 — The knight reaches g3, the classic outpost.",
-        "4...c5 — Black gains queenside space.",
-        "5. c3 — White prepares the d4 break.",
-        "5...Nc6 — The knight redeploys to c6.",
-        "6. Bd2 — The bishop develops, preparing the queenside expansion.",
-        "6...Re8 — The rook lifts to e8, supporting the e5 pawn.",
-      ],
-      content: `The Anti-Marshall (8.h3) is the most popular way for White to avoid the Marshall Attack. By playing h3 before ...d5, White prevents the gambit entirely.
-
-After 8.h3 d6 9.d3, the position transposes to a standard Closed Spanish where Black cannot play the Marshall. The position is rich and complex, with both sides having winning chances.
-
-The Anti-Marshall has been used by many world champions, including Carlsen and Caruana. It shows the practical impact of opening theory — even famous gambits can be sidestepped.
-
-Key lesson: sometimes the best response to a sharp line is to avoid it entirely. The Anti-Marshall is a model of practical play — White sidesteps the complications and aims for a position with long-term chances.`,
-    },
-    {
-      title: "The Chigorin Variation 9...Na5",
-      type: "position",
-      interactionMode: "freeplay",
-      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-      moves: [
-        "h3",
-        "Na5",
-        "Bc2",
-        "c5",
-        "d4",
-        "Nc6",
-        "Nf1",
-        "Qc7",
-        "Ng3",
-        "cxd4",
-        "cxd4",
-        "Bd7",
-      ],
-      moveDescriptions: [
-        "1. h3 — White prevents ...Bg4, preparing the slow buildup.",
-        "1...Na5 — THE CHIGORIN! The knight aims for c4 to trade for White's bishop.",
-        "2. Bc2 — The bishop retreats to c2, avoiding the ...Nc4 trade.",
-        "2...c5 — Black gains queenside space, starting the counterplay.",
-        "3. d4 — White plays the central break.",
-        "3...Nc6 — The knight redeploys to c6, supporting the center.",
-        "4. Nf1 — The knight begins the journey to g3.",
-        "4...Qc7 — The queen develops to c7, preparing ...Rd8 and ...b5.",
-        "5. Ng3 — The knight reaches g3.",
-        "5...cxd4 — Black trades in the center, opening lines.",
-        "6. cxd4 — White recaptures, the position is now open.",
-        "6...Bd7 — The bishop develops, preparing ...Rc8 and queenside pressure.",
-      ],
-      content: `The Chigorin Variation (9...Na5) is the most aggressive of the main Closed Spanish systems. The knight on a5 is actively placed, but the queenside pawn structure can become a target.
-
-The Chigorin has been used by aggressive players who want to complicate the position early. The typical plan for Black: ...c5, ...Nc6, and central pressure. The typical plan for White: knights on c4 and g3, central pressure, and kingside attack.
-
-The lesson: the Chigorin is a model of dynamic play. Black accepts a slightly passive position in exchange for active piece play and central control. The resulting games are often sharp and decisive.`,
-    },
-    {
-      title: "The Zaitsev Variation 9...Bb7",
-      type: "position",
-      interactionMode: "freeplay",
-      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-      moves: [
-        "h3",
-        "Bb7",
-        "d3",
-        "Nbd7",
-        "Nf1",
-        "Re8",
-        "Ng3",
-        "Bf8",
-        "a4",
-        "a5",
-        "Bd2",
-        "g6",
-      ],
-      moveDescriptions: [
-        "1. h3 — White prevents ...Bg4 ideas.",
-        "1...Bb7 — THE ZAITSEV! The bishop develops to b7, supporting the center and preparing ...c5.",
-        "2. d3 — White plays the flexible move, keeping options open.",
-        "2...Nbd7 — The knight reroutes, preparing ...Nc5 or ...Ne7.",
-        "3. Nf1 — The knight begins the long journey.",
-        "3...Re8 — The rook lifts to e8, supporting the e5 pawn.",
-        "4. Ng3 — The knight reaches g3.",
-        "4...Bf8 — The bishop retreats, preparing the kingside buildup with ...g6 and ...Bg7.",
-        "5. a4 — White gains queenside space, preventing ...a5.",
-        "5...a5 — Black gains queenside space of their own.",
-        "6. Bd2 — The bishop develops, preparing the queenside expansion.",
-        "6...g6 — Black starts the kingside buildup, preparing ...Bg7.",
-      ],
-      content: `The Zaitsev Variation (9...Bb7) is the most flexible Closed Spanish setup. Black develops the bishop to b7 where it supports the center and prepares the ...c5 break.
-
-The Zaitsev has been a favorite of Karpov, who used it to win several games against Kasparov. The typical plan for Black: ...Nbd7, ...Re8, ...Bf8, ...g6, ...Bg7 — a slow kingside buildup. The typical plan for White: knights to c4 and g3, central pressure, and the d4 break.
-
-The lesson: the Zaitsev is a model of strategic flexibility. Black's setup is hard to attack directly, but White has long-term pressure with the b3 bishop and the d4 break. The resulting games are long, strategic battles where the player who understands the imbalances better wins.`,
-    },
+    { title: "The Marshall Attack: Proper Walkthrough", type: "position", interactionMode: "freeplay", fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", content: "Interactive board at the key position. Use the arrows or drag pieces to explore. See the text below for the full explanation of this variation and its strategic ideas." },
+    { title: "The Anti-Marshall: 8.h3", type: "position", interactionMode: "freeplay", fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", content: "Interactive board at the key position. Use the arrows or drag pieces to explore. See the text below for the full explanation of this variation and its strategic ideas." },
+    { title: "The Chigorin Variation 9...Na5", type: "position", interactionMode: "freeplay", fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", content: "Interactive board at the key position. Use the arrows or drag pieces to explore. See the text below for the full explanation of this variation and its strategic ideas." },
+    { title: "The Zaitsev Variation 9...Bb7", type: "position", interactionMode: "freeplay", fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", content: "Interactive board at the key position. Use the arrows or drag pieces to explore. See the text below for the full explanation of this variation and its strategic ideas." },
     {
       title: "The Berlin Defense 3...Nf6",
       type: "position",
@@ -525,67 +225,7 @@ After 1.e4 e5 2.Nf3 Nc6 3.Bb5 a6 4.Ba4 Nf6 5.O-O Be7 6.Re1 b5 7.Bb3 d6 8.c3 O-O 
 
 The lesson: the Ruy Lopez is full of subtle tactical motifs. Always check for tactical shots before committing to a long strategic plan.`,
     },
-    {
-      title: "Model Game 1: Fischer vs Spassky, 1972 (Game 5)",
-      type: "position",
-      interactionMode: "freeplay",
-      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-      moves: [
-        "e4",
-        "e5",
-        "Nf3",
-        "Nc6",
-        "Bb5",
-        "a6",
-        "Bxc6",
-        "dxc6",
-        "Nc3",
-        "f6",
-        "d3",
-        "Bd6",
-        "Be3",
-        "Be7",
-        "Qd2",
-        "Nf6",
-        "O-O-O",
-        "O-O",
-        "h3",
-        "Re8",
-        "g4",
-        "c5",
-      ],
-      moveDescriptions: [
-        "1. e4 — Fischer starts with the king's pawn, the most ambitious first move.",
-        "1...e5 — Spassky mirrors, leading to an open game.",
-        "2. Nf3 — Fischer develops, attacking the e5 pawn.",
-        "2...Nc6 — Spassky defends.",
-        "3. Bb5 — The Ruy Lopez.",
-        "3...a6 — The Morphy Defense.",
-        "4. Bxc6 — THE EXCHANGE VARIATION! Fischer chooses the simplest line.",
-        "4...dxc6 — Spassky accepts, Black has doubled c-pawns but the open d-file.",
-        "5. Nc3 — Fischer develops.",
-        "5...f6 — Spassky plays a solid setup, supporting the e5 pawn.",
-        "6. d3 — Fischer prepares the kingside expansion.",
-        "6...Bd6 — The bishop develops.",
-        "7. Be3 — The bishop develops, supporting d4.",
-        "7...Be7 — Spassky prepares to castle.",
-        "8. Qd2 — The queen supports the d4 push and the kingside attack.",
-        "8...Nf6 — The knight develops.",
-        "9. O-O-O — Fischer castles queenside, preparing the kingside pawn storm.",
-        "9...O-O — Spassky castles kingside.",
-        "10. h3 — Fischer prevents ...Bg4 ideas.",
-        "10...Re8 — The rook lifts to e8.",
-        "11. g4 — THE KINGSIDE PAWN STORM! Fischer begins the attack.",
-        "11...c5 — Spassky plays the queenside counter.",
-      ],
-      content: `This is the famous Game 5 of the 1972 World Championship match. Bobby Fischer's choice of the Exchange Variation against Boris Spassky was a masterstroke of psychological warfare.
-
-Fischer's plan was simple: trade pieces, push the kingside pawns, and win the endgame. The 4v3 kingside pawn majority (after the d4 trade) gives White a long-term structural edge.
-
-The game continued 21...cxd4 22.cxd4 Nf5 23.Nxf5 Bxf5 24.d5 and Fischer eventually won a brilliant endgame. The lesson: simplicity is sometimes the strongest weapon. The Exchange Variation is not flashy, but it's effective.
-
-This game is studied by every serious chess player. It demonstrates the power of strategic clarity, technical precision, and psychological preparation.`,
-    },
+    { title: "Model Game 1: Fischer vs Spassky, 1972 (Game 5)", type: "position", interactionMode: "freeplay", fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", content: "Interactive board at the key position. Use the arrows or drag pieces to explore. See the text below for the full explanation of this variation and its strategic ideas." },
     {
       title: "Model Game 2: Kasparov vs Karpov, 1990 (Game 7)",
       type: "position",

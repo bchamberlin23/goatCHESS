@@ -111,8 +111,8 @@ The Caro-Kann is a great choice. The positions are rich, the plans are clear, an
     },
     {
       title: "Step-by-Step: Main Line Setup 1.e4 c6 2.d4 d5",
-      type: "position",
-      interactionMode: "freeplay",
+      type: "moves",
+      interactionMode: "guided",
       fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       moves: ["e4", "c6", "d4", "d5"],
       moveDescriptions: [

@@ -113,8 +113,8 @@ The KID is a great choice. The positions are rich, the plans are clear, and the 
     },
     {
       title: "Step-by-Step: Main Line Setup 1.d4 Nf6 2.c4 g6",
-      type: "position",
-      interactionMode: "freeplay",
+      type: "moves",
+      interactionMode: "guided",
       fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       moves: ["d4", "Nf6", "c4", "g6"],
       moveDescriptions: [

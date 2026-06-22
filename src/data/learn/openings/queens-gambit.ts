@@ -110,8 +110,8 @@ For most players, the Queen's Gambit is the best choice. The positions are clear
     },
     {
       title: "Step-by-Step: Main Line Setup 1.d4 d5 2.c4",
-      type: "position",
-      interactionMode: "freeplay",
+      type: "moves",
+      interactionMode: "guided",
       fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       moves: ["d4", "d5", "c4"],
       moveDescriptions: [
