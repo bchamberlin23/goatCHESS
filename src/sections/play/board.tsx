@@ -5,7 +5,7 @@ import {
   playerColorAtom,
   isGameInProgressAtom,
   gameDataAtom,
-  enginePlayNameAtom,
+  enginePlaySelectionAtom,
   playViewMoveIndexAtom,
   playBoardFlippedAtom,
   preMoveAtom,
@@ -30,8 +30,8 @@ import {
 
 export default function BoardContainer() {
   const screenSize = useScreenSize();
-  const engineName = useAtomValue(enginePlayNameAtom);
-  const engine = useEngine(engineName);
+  const enginePlaySelection = useAtomValue(enginePlaySelectionAtom);
+  const engine = useEngine(enginePlaySelection);
   const game = useAtomValue(gameAtom);
   const { white, black } = usePlayersData(gameAtom);
   const playerColor = useAtomValue(playerColorAtom);

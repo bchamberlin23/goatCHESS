@@ -17,9 +17,14 @@ import {
   useTheme,
   Switch,
   FormControlLabel,
+  TextField,
+  IconButton,
+  Divider,
+  Tooltip,
+  Stack,
 } from "@mui/material";
 import {
-  engineNameAtom,
+  engineSelectionAtom,
   engineDepthAtom,
   engineMultiPvAtom,
   engineWorkersNbAtom,
@@ -27,10 +32,10 @@ import {
 import { darkModeAtom } from "@/states/global";
 import ArrowOptions from "./arrowOptions";
 import { useAtomLocalStorage } from "@/hooks/useAtomLocalStorage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { isEngineSupported } from "@/lib/engine/shared";
 import { Stockfish16_1 } from "@/lib/engine/stockfish16_1";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { boardHueAtom, pieceSetAtom } from "@/components/board/states";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
@@ -41,6 +46,10 @@ import {
   STRONGEST_ENGINE,
 } from "@/constants";
 import { getRecommendedWorkersNb } from "@/lib/engine/worker";
+import { useLocalEngines } from "@/hooks/useLocalEngines";
+import { engineSelectionKey } from "@/lib/engine/selection";
+import { localBridgeAvailableAtom } from "@/lib/engine/localEngineConfig";
+import { logMessageIfLocalhost } from "@/lib/helpers";
 
 interface Props {
   open: boolean;
@@ -56,27 +65,70 @@ export default function EngineSettingsDialog({ open, onClose }: Props) {
     "engine-multi-pv",
     engineMultiPvAtom
   );
-  const [engineName, setEngineName] = useAtomLocalStorage(
-    "engine-name",
-    engineNameAtom
+  const [engineSelection, setEngineSelection] = useAtomLocalStorage(
+    "engine-selection",
+    engineSelectionAtom
   );
   const [boardHue, setBoardHue] = useAtom(boardHueAtom);
   const [pieceSet, setPieceSet] = useAtom(pieceSetAtom);
   const [engineWorkersNb, setEngineWorkersNb] = useAtom(engineWorkersNbAtom);
   const [darkModeVal, setDarkModeVal] = useAtom(darkModeAtom);
+  const localBridgeAvailable = useAtomValue(localBridgeAvailableAtom);
+  const {
+    engines: localEngines,
+    detectedEngines,
+    addEngine,
+    removeEngine,
+  } = useLocalEngines();
+
+  const [newEngineName, setNewEngineName] = useState("");
+  const [newEnginePath, setNewEnginePath] = useState("");
+  const [addError, setAddError] = useState<string | null>(null);
 
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
 
   useEffect(() => {
-    if (!isEngineSupported(engineName)) {
+    if (
+      engineSelection.kind === "browser" &&
+      !isEngineSupported(engineSelection.name)
+    ) {
       if (Stockfish16_1.isSupported()) {
-        setEngineName(EngineName.Stockfish16_1Lite);
+        setEngineSelection({
+          kind: "browser",
+          name: EngineName.Stockfish16_1Lite,
+        });
       } else {
-        setEngineName(EngineName.Stockfish11);
+        setEngineSelection({ kind: "browser", name: EngineName.Stockfish11 });
       }
     }
-  }, [setEngineName, engineName]);
+  }, [setEngineSelection, engineSelection]);
+
+  const handleSelectionChange = (value: string) => {
+    if (value.startsWith("local:")) {
+      setEngineSelection({
+        kind: "local",
+        id: value.slice("local:".length),
+      });
+    } else {
+      setEngineSelection({ kind: "browser", name: value as EngineName });
+    }
+  };
+
+  const handleAddLocalEngine = () => {
+    setAddError(null);
+    const result = addEngine({
+      name: newEngineName.trim(),
+      path: newEnginePath.trim(),
+    });
+    if (!result.ok) {
+      setAddError(result.error);
+      return;
+    }
+    setNewEngineName("");
+    setNewEnginePath("");
+    logMessageIfLocalhost(`Added local engine: ${result.engine.name}`);
+  };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -124,24 +176,40 @@ export default function EngineSettingsDialog({ open, onClose }: Props) {
             justifyContent="center"
             size={{ xs: 12, sm: 5, md: 4 }}
           >
-            <FormControl variant="outlined">
+            <FormControl variant="outlined" fullWidth>
               <InputLabel id="dialog-select-label">Engine</InputLabel>
               <Select
                 labelId="dialog-select-label"
                 id="dialog-select"
                 displayEmpty
                 input={<OutlinedInput label="Engine" />}
-                value={engineName}
-                onChange={(e) => setEngineName(e.target.value as EngineName)}
+                value={engineSelectionKey(engineSelection)}
+                onChange={(e) => handleSelectionChange(e.target.value)}
                 sx={{ width: 280, maxWidth: "100%" }}
               >
                 {Object.values(EngineName).map((engine) => (
                   <MenuItem
-                    key={engine}
+                    key={`browser:${engine}`}
                     value={engine}
                     disabled={!isEngineSupported(engine)}
                   >
                     {ENGINE_LABELS[engine].full}
+                  </MenuItem>
+                ))}
+                {localEngines.length > 0 && (
+                  <Box sx={{ width: "100%", opacity: 0.5, px: 2, py: 0.5 }}>
+                    <Typography variant="caption" fontWeight={700}>
+                      Local engines
+                    </Typography>
+                  </Box>
+                )}
+                {localEngines.map((engine) => (
+                  <MenuItem
+                    key={`local:${engine.id}`}
+                    value={`local:${engine.id}`}
+                    disabled={!localBridgeAvailable}
+                  >
+                    {engine.name} {!localBridgeAvailable && "(bridge offline)"}
                   </MenuItem>
                 ))}
               </Select>
@@ -168,6 +236,183 @@ export default function EngineSettingsDialog({ open, onClose }: Props) {
           />
 
           <ArrowOptions />
+
+          {/* Local engines section */}
+          <Grid container size={12}>
+            <Divider sx={{ width: "100%", my: 1 }} />
+          </Grid>
+          <Grid container justifyContent="center" alignItems="center" size={12}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={1}
+              sx={{ mb: 1 }}
+            >
+              <Icon icon="mdi:chip" width={20} />
+              <Typography variant="subtitle2" fontWeight={700}>
+                Local engines
+              </Typography>
+              <Tooltip
+                title={
+                  localBridgeAvailable
+                    ? "Engine bridge is running. Local engines can be used."
+                    : "Engine bridge is not running. Start it with `npm run dev` to use local engines."
+                }
+              >
+                <Box
+                  sx={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: "50%",
+                    backgroundColor: localBridgeAvailable
+                      ? "#4caf50"
+                      : "#f44336",
+                  }}
+                />
+              </Tooltip>
+            </Stack>
+          </Grid>
+
+          {localEngines.length > 0 && (
+            <Grid container size={12}>
+              <Stack spacing={1} sx={{ width: "100%" }}>
+                {localEngines.map((engine) => (
+                  <Box
+                    key={engine.id}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      p: 1,
+                      borderRadius: 1,
+                      border: "1px solid",
+                      borderColor: (theme) =>
+                        theme.palette.mode === "dark"
+                          ? "rgba(255,255,255,0.08)"
+                          : "rgba(0,0,0,0.08)",
+                    }}
+                  >
+                    <Box sx={{ flexGrow: 1 }}>
+                      <Typography variant="body2" fontWeight={600}>
+                        {engine.name}
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{
+                          wordBreak: "break-all",
+                          display: "block",
+                        }}
+                      >
+                        {engine.path}
+                      </Typography>
+                    </Box>
+                    <IconButton
+                      size="small"
+                      onClick={() => removeEngine(engine.id)}
+                      aria-label="remove engine"
+                    >
+                      <Icon icon="mdi:trash-can-outline" />
+                    </IconButton>
+                  </Box>
+                ))}
+              </Stack>
+            </Grid>
+          )}
+
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="flex-end"
+            size={12}
+            spacing={1}
+          >
+            <Grid size={{ xs: 12, sm: 4 }}>
+              <TextField
+                label="Name"
+                variant="outlined"
+                size="small"
+                value={newEngineName}
+                onChange={(e) => setNewEngineName(e.target.value)}
+                fullWidth
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                label="Path to UCI binary"
+                variant="outlined"
+                size="small"
+                value={newEnginePath}
+                onChange={(e) => setNewEnginePath(e.target.value)}
+                placeholder="/usr/local/bin/stockfish"
+                fullWidth
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 2 }}>
+              <Button
+                variant="contained"
+                onClick={handleAddLocalEngine}
+                disabled={!newEngineName.trim() || !newEnginePath.trim()}
+                fullWidth
+              >
+                Add
+              </Button>
+            </Grid>
+          </Grid>
+
+          {addError && (
+            <Grid container size={12}>
+              <Typography color="error" variant="caption">
+                {addError}
+              </Typography>
+            </Grid>
+          )}
+
+          {detectedEngines.length > 0 && localEngines.length === 0 && (
+            <Grid container size={12}>
+              <Box
+                sx={{
+                  p: 1.5,
+                  borderRadius: 1,
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "rgba(255,255,255,0.04)"
+                      : "rgba(0,0,0,0.04)",
+                  width: "100%",
+                }}
+              >
+                <Typography variant="caption" fontWeight={600}>
+                  Detected on your system:
+                </Typography>
+                <Stack spacing={0.5} sx={{ mt: 0.5 }}>
+                  {detectedEngines.map((e) => (
+                    <Stack
+                      key={e.path}
+                      direction="row"
+                      alignItems="center"
+                      spacing={1}
+                    >
+                      <Typography
+                        variant="caption"
+                        sx={{ fontFamily: "monospace", flexGrow: 1 }}
+                      >
+                        {e.name} — {e.path}
+                      </Typography>
+                      <Button
+                        size="small"
+                        onClick={() => {
+                          setNewEngineName(e.name);
+                          setNewEnginePath(e.path);
+                        }}
+                      >
+                        Use
+                      </Button>
+                    </Stack>
+                  ))}
+                </Stack>
+              </Box>
+            </Grid>
+          )}
 
           <Grid
             container

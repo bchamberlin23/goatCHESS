@@ -7,7 +7,7 @@ import PlayMoveHistory from "@/sections/play/PlayMoveHistory";
 import {
   isGameInProgressAtom,
   playerColorAtom,
-  enginePlayNameAtom,
+  enginePlaySelectionAtom,
   engineEloAtom,
   gameStartTimeAtom,
   gameAtom,
@@ -30,18 +30,23 @@ import { ENGINE_LABELS } from "@/constants";
 import { Icon } from "@iconify/react";
 import { useNavigationGuard } from "@/hooks/useNavigationGuard";
 import { getOpeningName } from "@/lib/chess";
+import { useLocalEngines } from "@/hooks/useLocalEngines";
 
 export default function Play() {
   const isGameInProgress = useAtomValue(isGameInProgressAtom);
   const playerColor = useAtomValue(playerColorAtom);
-  const engineName = useAtomValue(enginePlayNameAtom);
+  const enginePlaySelection = useAtomValue(enginePlaySelectionAtom);
   const engineElo = useAtomValue(engineEloAtom);
   const [, setGameStartTime] = useAtom(gameStartTimeAtom);
   const game = useAtomValue(gameAtom);
   const [viewMoveIdx, setViewMoveIdx] = useAtom(playViewMoveIndexAtom);
   const [, setBoardFlipped] = useAtom(playBoardFlippedAtom);
+  const { getEngineLabel } = useLocalEngines();
 
-  const engineLabel = ENGINE_LABELS[engineName]?.small || "Stockfish";
+  const engineLabel =
+    enginePlaySelection.kind === "browser"
+      ? ENGINE_LABELS[enginePlaySelection.name]?.small || "Stockfish"
+      : getEngineLabel(enginePlaySelection.id);
 
   // Record game start time when game becomes active
   useEffect(() => {

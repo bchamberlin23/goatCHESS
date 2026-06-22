@@ -10,6 +10,7 @@ import SiteFooter from "./SiteFooter";
 import KeyboardShortcutsDialog from "@/components/KeyboardShortcutsDialog";
 import GlobalSnackbar from "@/components/GlobalSnackbar";
 import { useGlobalShortcuts } from "@/hooks/useGlobalShortcuts";
+import { useLocalBridgeStatus } from "@/hooks/useLocalBridgeStatus";
 import { useAtom } from "jotai";
 import { darkModeAtom } from "@/states/global";
 import { MAIN_THEME_COLOR } from "@/constants";
@@ -32,6 +33,7 @@ const globalStyles = (
 export default function Layout({ children }: PropsWithChildren) {
   const [isDarkMode, setDarkMode] = useAtom(darkModeAtom);
   const { shortcutsOpen, setShortcutsOpen } = useGlobalShortcuts();
+  useLocalBridgeStatus();
 
   useEffect(() => {
     const item = window.localStorage.getItem("useDarkMode");

@@ -4,14 +4,14 @@ import { GameEval } from "@/types/eval";
 import { LoadedGame } from "@/types/game";
 import { InsightsGameResult, InsightsReport } from "@/types/insights";
 import { getEvaluateGameParams } from "@/lib/chess";
-import { UciEngine } from "@/lib/engine/uciEngine";
+import { Engine } from "@/lib/engine/engine";
 import { aggregateInsights } from "./aggregateInsights";
 
 export interface AnalyzeAllGamesParams {
   games: LoadedGame[];
   username: string;
   platform: "chesscom" | "lichess";
-  engine: UciEngine;
+  engine: Engine;
   depth?: number;
   onGameStart?: (gameIndex: number, game: LoadedGame) => void;
   onGameComplete?: (gameIndex: number, gameResult: InsightsGameResult) => void;
@@ -80,7 +80,7 @@ export const analyzeAllGames = async ({
 const analyzeGame = async (
   game: LoadedGame,
   username: string,
-  engine: UciEngine,
+  engine: Engine,
   depth: number,
   signal?: AbortSignal
 ): Promise<InsightsGameResult> => {

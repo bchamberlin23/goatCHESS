@@ -17,8 +17,9 @@ import { computeEstimatedElo } from "./helpers/estimateElo";
 import { EngineWorker, WorkerJob } from "@/types/engine";
 import { getEngineWorker, sendCommandsToWorker } from "./worker";
 import { logMessageIfLocalhost } from "../helpers";
+import { Engine } from "./engine";
 
-export class UciEngine {
+export class UciEngine implements Engine {
   public readonly name: EngineName;
   private workers: EngineWorker[] = [];
   private workerQueue: WorkerJob[] = [];

@@ -12,12 +12,13 @@ import {
   gameAtom,
   isGameInProgressAtom,
   playerColorAtom,
-  enginePlayNameAtom,
+  enginePlaySelectionAtom,
   playViewMoveIndexAtom,
 } from "./states";
 import { useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { ENGINE_LABELS } from "@/constants";
+import { useLocalEngines } from "@/hooks/useLocalEngines";
 import UndoMoveButton from "./undoMoveButton";
 
 const pulseGreen = keyframes`
@@ -54,7 +55,8 @@ export default function GameInProgress() {
   const game = useAtomValue(gameAtom);
   const [isGameInProgress, setIsGameInProgress] = useAtom(isGameInProgressAtom);
   const playerColor = useAtomValue(playerColorAtom);
-  const engineName = useAtomValue(enginePlayNameAtom);
+  const engineSelection = useAtomValue(enginePlaySelectionAtom);
+  const { getEngineLabel } = useLocalEngines();
   const setViewMoveIdx = useSetAtom(playViewMoveIndexAtom);
 
   useEffect(() => {
@@ -69,7 +71,10 @@ export default function GameInProgress() {
   if (!isGameInProgress) return null;
 
   const isPlayerTurn = game.turn() === playerColor;
-  const engineLabel = ENGINE_LABELS[engineName]?.small || "Stockfish";
+  const engineLabel =
+    engineSelection.kind === "browser"
+      ? ENGINE_LABELS[engineSelection.name]?.small || "Stockfish"
+      : getEngineLabel(engineSelection.id);
   const moveNumber = Math.floor(game.history().length / 2) + 1;
 
   return (

@@ -89,7 +89,7 @@ export default function InsightsPage() {
   const [report, setReport] = useState<InsightsReport | null>(null);
 
   const abortControllerRef = useRef<AbortController | null>(null);
-  const engine = useEngine(DEFAULT_ENGINE);
+  const engine = useEngine({ kind: "browser", name: DEFAULT_ENGINE });
   const customGameCount = parseCustomGameCount(customGameCountInput);
   const isCustomGameCountInvalid =
     gameCountSelection.mode === "custom" && customGameCount === null;

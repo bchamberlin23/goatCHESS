@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react";
 import {
   engineDepthAtom,
   engineMultiPvAtom,
-  engineNameAtom,
+  engineSelectionAtom,
   engineWorkersNbAtom,
   evaluationProgressAtom,
   gameAtom,
@@ -20,10 +20,11 @@ import { useEffect, useCallback } from "react";
 import { usePlayersData } from "@/hooks/usePlayersData";
 import { Typography } from "@mui/material";
 import { useCurrentPosition } from "../hooks/useCurrentPosition";
+import { engineSelectionKey } from "@/lib/engine/selection";
 
 export default function AnalyzeButton() {
-  const engineName = useAtomValue(engineNameAtom);
-  const engine = useEngine(engineName);
+  const engineSelection = useAtomValue(engineSelectionAtom);
+  const engine = useEngine(engineSelection);
   useCurrentPosition(engine);
   const engineWorkersNb = useAtomValue(engineWorkersNbAtom);
   const [evaluationProgress, setEvaluationProgress] = useAtom(
@@ -69,8 +70,9 @@ export default function AnalyzeButton() {
       setGameEval(gameFromUrl.id, newGameEval);
     }
 
+    const engineId = engineSelectionKey(engineSelection);
     const gameSavedEvals: SavedEvals = params.fens.reduce((acc, fen, idx) => {
-      acc[fen] = { ...newGameEval.positions[idx], engine: engineName };
+      acc[fen] = { ...newGameEval.positions[idx], engine: engineId };
       return acc;
     }, {} as SavedEvals);
     setSavedEvals((prev) => ({
@@ -79,14 +81,14 @@ export default function AnalyzeButton() {
     }));
 
     logAnalyticsEvent("analyze_game", {
-      engine: engineName,
+      engine: engineId,
       depth: engineDepth,
       multiPv: engineMultiPv,
       nbPositions: params.fens.length,
     });
   }, [
     engine,
-    engineName,
+    engineSelection,
     engineWorkersNb,
     game,
     engineDepth,

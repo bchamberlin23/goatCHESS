@@ -13,9 +13,9 @@ import { useEffect } from "react";
 import { getEvaluateGameParams } from "@/lib/chess";
 import { getMovesClassification } from "@/lib/engine/helpers/moveClassification";
 import { openings } from "@/data/openings";
-import { UciEngine } from "@/lib/engine/uciEngine";
+import { Engine } from "@/lib/engine/engine";
 
-export const useCurrentPosition = (engine: UciEngine | null) => {
+export const useCurrentPosition = (engine: Engine | null) => {
   const [currentPosition, setCurrentPosition] = useAtom(currentPositionAtom);
   const gameEval = useAtomValue(gameEvalAtom);
   const game = useAtomValue(gameAtom);

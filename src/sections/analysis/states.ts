@@ -1,6 +1,7 @@
 import { DEFAULT_ENGINE } from "@/constants";
 import { getRecommendedWorkersNb } from "@/lib/engine/worker";
-import { EngineName, MoveClassification } from "@/types/enums";
+import { EngineSelection } from "@/lib/engine/selection";
+import { MoveClassification } from "@/types/enums";
 import { CurrentPosition, GameEval, SavedEvals } from "@/types/eval";
 import { Chess } from "chess.js";
 import { atom } from "jotai";
@@ -16,7 +17,10 @@ export const showBestMoveArrowAtom = atom(true);
 export const showTopMovesArrowsAtom = atom(false);
 export const showPlayerMoveIconAtom = atom(true);
 
-export const engineNameAtom = atom<EngineName>(DEFAULT_ENGINE);
+export const engineSelectionAtom = atom<EngineSelection>({
+  kind: "browser",
+  name: DEFAULT_ENGINE,
+});
 export const engineDepthAtom = atom(14);
 export const engineMultiPvAtom = atom(3);
 export const engineWorkersNbAtom = atomWithStorage(

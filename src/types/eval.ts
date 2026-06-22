@@ -1,5 +1,5 @@
 import { Move } from "chess.js";
-import { EngineName, MoveClassification } from "./enums";
+import { MoveClassification } from "./enums";
 
 export interface PositionEval {
   bestMove?: string;
@@ -27,7 +27,7 @@ export interface EstimatedElo {
 }
 
 export interface EngineSettings {
-  engine: EngineName;
+  engine: string;
   depth: number;
   multiPv: number;
   date: string;
@@ -69,7 +69,7 @@ export interface EvaluateGameParams {
 export interface SavedEval {
   bestMove?: string;
   lines: LineEval[];
-  engine: EngineName;
+  engine: string;
 }
 
 export type SavedEvals = Record<string, SavedEval | undefined>;

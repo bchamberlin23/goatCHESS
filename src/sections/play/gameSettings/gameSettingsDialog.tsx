@@ -25,7 +25,7 @@ import {
   playerColorAtom,
   isGameInProgressAtom,
   gameAtom,
-  enginePlayNameAtom,
+  enginePlaySelectionAtom,
 } from "../states";
 import { useChessActions } from "@/hooks/useChessActions";
 import { logAnalyticsEvent } from "@/lib/firebase";
@@ -34,6 +34,8 @@ import { isEngineSupported } from "@/lib/engine/shared";
 import { Stockfish16_1 } from "@/lib/engine/stockfish16_1";
 import { DEFAULT_ENGINE, ENGINE_LABELS, STRONGEST_ENGINE } from "@/constants";
 import { getGameFromPgn } from "@/lib/chess";
+import { useLocalEngines } from "@/hooks/useLocalEngines";
+import { engineSelectionKey } from "@/lib/engine/selection";
 
 interface Props {
   open: boolean;
@@ -45,15 +47,21 @@ export default function GameSettingsDialog({ open, onClose }: Props) {
     "engine-elo",
     engineEloAtom
   );
-  const [engineName, setEngineName] = useAtomLocalStorage(
-    "engine-play-name",
-    enginePlayNameAtom
+  const [enginePlaySelection, setEnginePlaySelection] = useAtomLocalStorage(
+    "engine-play-selection",
+    enginePlaySelectionAtom
   );
   const [playerColor, setPlayerColor] = useAtom(playerColorAtom);
   const setIsGameInProgress = useSetAtom(isGameInProgressAtom);
   const { reset: resetGame } = useChessActions(gameAtom);
   const [startingPositionInput, setStartingPositionInput] = useState("");
   const [parsingError, setParsingError] = useState("");
+  const { engines: localEngines, getEngineLabel } = useLocalEngines();
+
+  const playEngineLabel =
+    enginePlaySelection.kind === "browser"
+      ? ENGINE_LABELS[enginePlaySelection.name]?.small || "Stockfish"
+      : getEngineLabel(enginePlaySelection.id);
 
   const handleGameStart = () => {
     setParsingError("");
@@ -66,17 +74,11 @@ export default function GameSettingsDialog({ open, onClose }: Props) {
 
       resetGame({
         white: {
-          name:
-            playerColor === Color.White
-              ? "You"
-              : ENGINE_LABELS[engineName].small,
+          name: playerColor === Color.White ? "You" : playEngineLabel,
           rating: playerColor === Color.White ? undefined : engineElo,
         },
         black: {
-          name:
-            playerColor === Color.Black
-              ? "You"
-              : ENGINE_LABELS[engineName].small,
+          name: playerColor === Color.Black ? "You" : playEngineLabel,
           rating: playerColor === Color.Black ? undefined : engineElo,
         },
         fen: startingFen,
@@ -95,21 +97,30 @@ export default function GameSettingsDialog({ open, onClose }: Props) {
     handleClose();
 
     logAnalyticsEvent("play_game", {
-      engine: engineName,
+      engine: engineSelectionKey(enginePlaySelection),
       engineElo,
       playerColor,
     });
   };
 
   useEffect(() => {
-    if (!isEngineSupported(engineName)) {
+    if (
+      enginePlaySelection.kind === "browser" &&
+      !isEngineSupported(enginePlaySelection.name)
+    ) {
       if (Stockfish16_1.isSupported()) {
-        setEngineName(EngineName.Stockfish16_1Lite);
+        setEnginePlaySelection({
+          kind: "browser",
+          name: EngineName.Stockfish16_1Lite,
+        });
       } else {
-        setEngineName(EngineName.Stockfish11);
+        setEnginePlaySelection({
+          kind: "browser",
+          name: EngineName.Stockfish11,
+        });
       }
     }
-  }, [setEngineName, engineName]);
+  }, [setEnginePlaySelection, enginePlaySelection]);
 
   const handleClose = () => {
     onClose();
@@ -146,17 +157,38 @@ export default function GameSettingsDialog({ open, onClose }: Props) {
                 id="dialog-select"
                 displayEmpty
                 input={<OutlinedInput label="Engine" />}
-                value={engineName}
-                onChange={(e) => setEngineName(e.target.value as EngineName)}
+                value={engineSelectionKey(enginePlaySelection)}
+                onChange={(e) => {
+                  const value = e.target.value as string;
+                  if (value.startsWith("local:")) {
+                    setEnginePlaySelection({
+                      kind: "local",
+                      id: value.slice("local:".length),
+                    });
+                  } else {
+                    setEnginePlaySelection({
+                      kind: "browser",
+                      name: value as EngineName,
+                    });
+                  }
+                }}
                 sx={{ width: 280, maxWidth: "100%" }}
               >
                 {Object.values(EngineName).map((engine) => (
                   <MenuItem
-                    key={engine}
+                    key={`browser:${engine}`}
                     value={engine}
                     disabled={!isEngineSupported(engine)}
                   >
                     {ENGINE_LABELS[engine].full}
+                  </MenuItem>
+                ))}
+                {localEngines.map((engine) => (
+                  <MenuItem
+                    key={`local:${engine.id}`}
+                    value={`local:${engine.id}`}
+                  >
+                    {engine.name} (local)
                   </MenuItem>
                 ))}
               </Select>
