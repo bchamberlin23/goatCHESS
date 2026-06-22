@@ -24,11 +24,11 @@ import { deflectionDecoy } from "./tactics/deflection-decoy";
 import { pawnStructure } from "./strategy/pawn-structure";
 import { pieceActivity } from "./strategy/piece-activity";
 import { spaceAdvantage } from "./strategy/space-advantage";
-import { openFilesOutposts } from "./strategy/open-files";
-import { kingPawnEndgame } from "./endgames/king-pawn";
+import { openFiles } from "./strategy/open-files";
+import { kingPawn } from "./endgames/king-pawn";
 import { rookEndgames } from "./endgames/rook";
 import { opposition } from "./endgames/opposition";
-import { queenVsPawn } from "./endgames/queen-pawn";
+import { queenPawn } from "./endgames/queen-pawn";
 
 export const allTopics: LearnTopic[] = [
   // Openings
@@ -63,13 +63,13 @@ export const allTopics: LearnTopic[] = [
   pawnStructure,
   pieceActivity,
   spaceAdvantage,
-  openFilesOutposts,
+  openFiles,
 
   // Endgames
-  kingPawnEndgame,
+  kingPawn,
   rookEndgames,
   opposition,
-  queenVsPawn,
+  queenPawn,
 ];
 
 export function getTopicsByCategory(category: string): LearnTopic[] {

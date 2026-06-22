@@ -34,9 +34,9 @@ In this example position, the Black king is on c8 (after queenside castling), an
     },
     {
       title: "Step-by-Step: The Original Boden Game, 1853",
-      type: "moves",
-      interactionMode: "guided",
-      fen: "r1bqk2r/pppp1ppp/2n2n2/4p3/1bB1P3/2NP1N2/PP3PPP/R1BQK2R b KQkq - 0 0",
+      type: "position",
+      interactionMode: "freeplay",
+      fen: "r1bqk2r/pppp1ppp/2n2n2/4p3/1bB1P3/2NP1N2/PP3PPP/R1BQK2R b KQkq - 0 1",
       moves: [
         "O-O",
         "O-O",
