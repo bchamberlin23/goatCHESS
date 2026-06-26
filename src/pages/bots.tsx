@@ -98,6 +98,7 @@ export default function BotVsBot() {
           display: "flex",
           minWidth: 0,
           maxWidth: 480,
+          overflow: "hidden",
         }}
         padding={3}
       >
@@ -110,7 +111,7 @@ export default function BotVsBot() {
         />
 
         {/* Move history */}
-        <Box sx={{ flexGrow: 1, minHeight: 180, overflow: "hidden", mb: 2 }}>
+        <Box sx={{ flexGrow: 1, minHeight: 180, overflow: "hidden", mb: 2, width: "100%" }}>
           <BotMoveHistory />
         </Box>
 
