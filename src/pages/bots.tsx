@@ -60,15 +60,12 @@ export default function BotVsBot() {
   }, [setBoardFlipped]);
 
   return (
-    <Box
-      sx={{
-        minHeight: "90vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        gap: 4,
-        p: 4,
-      }}
+    <Grid
+      container
+      gap={4}
+      justifyContent="center"
+      alignItems="start"
+      sx={{ minHeight: "90vh" }}
     >
       <PageTitle title="Chesskit Bot vs Bot" />
 
@@ -125,6 +122,6 @@ export default function BotVsBot() {
           </Box>
         </Stack>
       </Grid>
-    </Box>
+    </Grid>
   );
 }
