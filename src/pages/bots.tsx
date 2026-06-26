@@ -71,17 +71,12 @@ export default function BotVsBot() {
 
       <BotBoard />
 
-      <Grid
-        container
-        marginTop={{ xs: 0, md: "2.5em" }}
-        justifyContent="flex-start"
-        alignItems="stretch"
-        borderRadius={3}
-        size={{
-          xs: 12,
-          md: 5,
-        }}
+      <Box
         sx={{
+          width: { xs: "100%", md: 480 },
+          maxWidth: 480,
+          mt: { xs: 0, md: "2.5em" },
+          borderRadius: 3,
           backgroundColor: (theme) =>
             theme.palette.mode === "dark" ? "#1a1a1e" : "#f8f8fa",
           border: "1px solid",
@@ -94,13 +89,11 @@ export default function BotVsBot() {
               ? "0 8px 32px rgba(0, 0, 0, 0.35)"
               : "0 8px 32px rgba(29, 36, 44, 0.08)",
           height: { xs: "auto", md: "calc(90vh - 60px)" },
-          flexDirection: "column",
           display: "flex",
-          minWidth: 0,
-          maxWidth: 480,
+          flexDirection: "column",
           overflow: "hidden",
+          p: 3,
         }}
-        padding={3}
       >
         {/* Matchup header with eval */}
         <EvalHeader
@@ -122,7 +115,7 @@ export default function BotVsBot() {
             <BotSettingsButton />
           </Box>
         </Stack>
-      </Grid>
+      </Box>
     </Grid>
   );
 }
