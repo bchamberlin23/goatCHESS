@@ -93,6 +93,7 @@ export default function BotMoveHistory() {
         display: "flex",
         flexDirection: "column",
         width: "100%",
+        maxWidth: "100%",
         height: "100%",
         minHeight: 180,
         overflow: "hidden",
@@ -113,7 +114,9 @@ export default function BotMoveHistory() {
           paddingTop: 1,
           scrollbarWidth: "thin",
           overflowY: "auto",
+          overflowX: "hidden",
           flexGrow: 1,
+          minWidth: 0,
         }}
       >
         {gameMoves.length === 0 ? (
