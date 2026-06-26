@@ -92,10 +92,12 @@ export default function BotMoveHistory() {
         borderRadius: 2,
         display: "flex",
         flexDirection: "column",
+        width: "100%",
         height: "100%",
         minHeight: 180,
         overflow: "hidden",
         padding: 1.5,
+        boxSizing: "border-box",
       }}
     >
       <Typography color="text.secondary" fontSize="0.72rem" fontWeight={700}>
@@ -130,11 +132,12 @@ export default function BotMoveHistory() {
                 key={rowIdx}
                 sx={{
                   display: "grid",
-                  gridTemplateColumns: "2.5rem 1fr 1fr",
+                  gridTemplateColumns: "2rem 1fr 1fr",
                   alignItems: "center",
                   width: "100%",
                   paddingY: 0.25,
                   borderRadius: 0.5,
+                  overflow: "hidden",
                   "&:hover": {
                     backgroundColor: (theme) =>
                       theme.palette.mode === "dark"
@@ -165,7 +168,10 @@ export default function BotMoveHistory() {
                         alignItems: "center",
                         padding: "0.25rem 0.5rem",
                         borderRadius: 1,
-                        width: "90%",
+                        minWidth: 0,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
                         backgroundColor: isActive
                           ? theme.palette.mode === "dark"
                             ? "rgba(255, 255, 255, 0.12)"

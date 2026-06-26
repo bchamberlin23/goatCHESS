@@ -13,14 +13,16 @@ import {
   blackEngineEloAtom,
 } from "@/sections/botVsBot/states";
 import { Grid2 as Grid, Box, Stack, Typography, Chip } from "@mui/material";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom, useAtom } from "jotai";
 import { useEffect } from "react";
 import { ENGINE_LABELS } from "@/constants";
 import { useLocalEngines } from "@/hooks/useLocalEngines";
 import { getOpeningName } from "@/lib/chess";
+import { Chess } from "chess.js";
 
 export default function BotVsBot() {
   const game = useAtomValue(botGameAtom);
+  const [, setGame] = useAtom(botGameAtom);
   const setBoardFlipped = useSetAtom(botBoardFlippedAtom);
   const whiteSelection = useAtomValue(whiteEngineSelectionAtom);
   const blackSelection = useAtomValue(blackEngineSelectionAtom);
@@ -39,6 +41,44 @@ export default function BotVsBot() {
       : getEngineLabel(blackSelection.id);
 
   useBotMatch();
+
+  // Update game headers when engine selections or elos change
+  useEffect(() => {
+    setGame((prev) => {
+      // Only update if headers are different
+      const currentHeaders = prev.getHeaders();
+      if (
+        currentHeaders.White === whiteLabel &&
+        currentHeaders.Black === blackLabel &&
+        currentHeaders.WhiteElo === String(whiteElo) &&
+        currentHeaders.BlackElo === String(blackElo)
+      ) {
+        return prev;
+      }
+
+      // Create new game with same position but updated headers
+      const newGame = new Chess(prev.fen());
+      const headers = prev.getHeaders();
+      for (const [key, val] of Object.entries(headers)) {
+        if (val !== undefined) newGame.setHeader(key, val);
+      }
+      newGame.setHeader("White", whiteLabel);
+      newGame.setHeader("Black", blackLabel);
+      newGame.setHeader("WhiteElo", String(whiteElo));
+      newGame.setHeader("BlackElo", String(blackElo));
+
+      // Replay moves
+      const history = prev.history({ verbose: true });
+      for (const move of history) {
+        newGame.move({
+          from: move.from,
+          to: move.to,
+          promotion: move.promotion,
+        });
+      }
+      return newGame;
+    });
+  }, [whiteLabel, blackLabel, whiteElo, blackElo, setGame]);
 
   // Keyboard shortcuts for the bot-vs-bot page
   useEffect(() => {
@@ -100,78 +140,17 @@ export default function BotVsBot() {
           display: "flex",
           maxWidth: "480px",
           width: "100%",
+          overflow: "hidden",
         }}
         padding={3}
       >
-        {/* Matchup header */}
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={1.5}
-          width="100%"
-          sx={{
-            pb: 2,
-            mb: 2,
-            borderBottom: "1px solid",
-            borderColor: (theme) =>
-              theme.palette.mode === "dark"
-                ? "rgba(255, 255, 255, 0.08)"
-                : "rgba(0, 0, 0, 0.08)",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 40,
-              height: 40,
-              borderRadius: 2,
-              backgroundColor: "rgba(201, 169, 110, 0.12)",
-              color: "#C9A96E",
-            }}
-          >
-            <Typography fontSize="1.4rem">⚔️</Typography>
-          </Box>
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="subtitle1" fontWeight={700}>
-              Bot vs Bot
-            </Typography>
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={1}
-              flexWrap="wrap"
-            >
-              <Typography variant="caption" color="text.secondary">
-                {whiteLabel} ({whiteElo}) vs {blackLabel} ({blackElo})
-              </Typography>
-              {(() => {
-                const opening = getOpeningName(game);
-                if (!opening) return null;
-                return (
-                  <Chip
-                    label={opening}
-                    size="small"
-                    sx={{
-                      fontSize: "0.65rem",
-                      fontWeight: 600,
-                      height: 20,
-                      borderRadius: 1,
-                      backgroundColor: (theme) =>
-                        theme.palette.mode === "dark"
-                          ? "rgba(201,169,110,0.1)"
-                          : "rgba(201,169,110,0.08)",
-                      color: "#C9A96E",
-                      border: "1px solid",
-                      borderColor: "rgba(201,169,110,0.2)",
-                    }}
-                  />
-                );
-              })()}
-            </Stack>
-          </Box>
-        </Stack>
+        {/* Matchup header with eval */}
+        <EvalHeader
+          whiteLabel={whiteLabel}
+          blackLabel={blackLabel}
+          whiteElo={whiteElo}
+          blackElo={blackElo}
+        />
 
         {/* Move history */}
         <Box sx={{ flexGrow: 1, minHeight: 180, overflow: "hidden", mb: 2 }}>
