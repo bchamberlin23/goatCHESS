@@ -3,26 +3,22 @@ import BotBoard from "@/sections/botVsBot/board";
 import BotControls from "@/sections/botVsBot/BotControls";
 import BotMoveHistory from "@/sections/botVsBot/BotMoveHistory";
 import BotSettingsButton from "@/sections/botVsBot/BotSettingsButton";
+import EvalHeader from "@/sections/botVsBot/EvalHeader";
 import { useBotMatch } from "@/sections/botVsBot/useBotMatch";
 import {
-  botGameAtom,
   botBoardFlippedAtom,
   whiteEngineSelectionAtom,
   blackEngineSelectionAtom,
   whiteEngineEloAtom,
   blackEngineEloAtom,
 } from "@/sections/botVsBot/states";
-import { Grid2 as Grid, Box, Stack, Typography, Chip } from "@mui/material";
-import { useAtomValue, useSetAtom, useAtom } from "jotai";
+import { Grid2 as Grid, Box, Stack } from "@mui/material";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { ENGINE_LABELS } from "@/constants";
 import { useLocalEngines } from "@/hooks/useLocalEngines";
-import { getOpeningName } from "@/lib/chess";
-import { Chess } from "chess.js";
 
 export default function BotVsBot() {
-  const game = useAtomValue(botGameAtom);
-  const [, setGame] = useAtom(botGameAtom);
   const setBoardFlipped = useSetAtom(botBoardFlippedAtom);
   const whiteSelection = useAtomValue(whiteEngineSelectionAtom);
   const blackSelection = useAtomValue(blackEngineSelectionAtom);
@@ -41,44 +37,6 @@ export default function BotVsBot() {
       : getEngineLabel(blackSelection.id);
 
   useBotMatch();
-
-  // Update game headers when engine selections or elos change
-  useEffect(() => {
-    setGame((prev) => {
-      // Only update if headers are different
-      const currentHeaders = prev.getHeaders();
-      if (
-        currentHeaders.White === whiteLabel &&
-        currentHeaders.Black === blackLabel &&
-        currentHeaders.WhiteElo === String(whiteElo) &&
-        currentHeaders.BlackElo === String(blackElo)
-      ) {
-        return prev;
-      }
-
-      // Create new game with same position but updated headers
-      const newGame = new Chess(prev.fen());
-      const headers = prev.getHeaders();
-      for (const [key, val] of Object.entries(headers)) {
-        if (val !== undefined) newGame.setHeader(key, val);
-      }
-      newGame.setHeader("White", whiteLabel);
-      newGame.setHeader("Black", blackLabel);
-      newGame.setHeader("WhiteElo", String(whiteElo));
-      newGame.setHeader("BlackElo", String(blackElo));
-
-      // Replay moves
-      const history = prev.history({ verbose: true });
-      for (const move of history) {
-        newGame.move({
-          from: move.from,
-          to: move.to,
-          promotion: move.promotion,
-        });
-      }
-      return newGame;
-    });
-  }, [whiteLabel, blackLabel, whiteElo, blackElo, setGame]);
 
   // Keyboard shortcuts for the bot-vs-bot page
   useEffect(() => {

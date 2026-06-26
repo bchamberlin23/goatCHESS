@@ -7,6 +7,7 @@ import { sleep } from "@/lib/helpers";
 import {
   botGameAtom,
   botGameDataAtom,
+  botEvalAtom,
   botIsRunningAtom,
   botIsPausedAtom,
   botMoveDelayAtom,
@@ -33,6 +34,7 @@ export const useBotMatch = () => {
 
   const { playMove } = useChessActions(botGameAtom);
   const setGameData = useSetAtom(botGameDataAtom);
+  const setEval = useSetAtom(botEvalAtom);
 
   const gameFen = game.fen();
   const delayRef = useRef(moveDelay);
@@ -67,6 +69,17 @@ export const useBotMatch = () => {
         const result = playMove(uciMoveParams(move));
         if (result) {
           setGameData({ lastMove: result });
+          // Evaluate the new position for live eval display
+          try {
+            const evalResult = await engine.evaluatePositionWithUpdate({
+              fen: game.fen(),
+              depth: 12,
+              multiPv: 1,
+            });
+            setEval(evalResult);
+          } catch {
+            // Eval failed, ignore
+          }
         }
       }
     };

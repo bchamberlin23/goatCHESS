@@ -1,7 +1,7 @@
 import { DEFAULT_ENGINE } from "@/constants";
 import { EngineSelection } from "@/lib/engine/selection";
 import { Color } from "@/types/enums";
-import { CurrentPosition } from "@/types/eval";
+import { CurrentPosition, PositionEval } from "@/types/eval";
 import { Chess } from "chess.js";
 import { atom } from "jotai";
 
@@ -9,6 +9,7 @@ export const botGameAtom = atom(new Chess());
 export const botGameDataAtom = atom<CurrentPosition>({});
 export const botViewMoveIndexAtom = atom<number | null>(null);
 export const botBoardFlippedAtom = atom(false);
+export const botEvalAtom = atom<PositionEval | null>(null);
 
 export const whiteEngineSelectionAtom = atom<EngineSelection>({
   kind: "browser",
