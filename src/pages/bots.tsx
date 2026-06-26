@@ -60,12 +60,15 @@ export default function BotVsBot() {
   }, [setBoardFlipped]);
 
   return (
-    <Grid
-      container
-      gap={4}
-      justifyContent="space-evenly"
-      alignItems="start"
-      sx={{ minHeight: "90vh" }}
+    <Box
+      sx={{
+        minHeight: "90vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        gap: 4,
+        p: 4,
+      }}
     >
       <PageTitle title="Chesskit Bot vs Bot" />
 
@@ -79,7 +82,7 @@ export default function BotVsBot() {
         borderRadius={3}
         size={{
           xs: 12,
-          md: "grow",
+          md: 5,
         }}
         sx={{
           backgroundColor: (theme) =>
@@ -96,9 +99,8 @@ export default function BotVsBot() {
           height: { xs: "auto", md: "calc(90vh - 60px)" },
           flexDirection: "column",
           display: "flex",
-          maxWidth: "480px",
-          width: "100%",
-          overflow: "hidden",
+          minWidth: 0,
+          maxWidth: 480,
         }}
         padding={3}
       >
@@ -123,6 +125,6 @@ export default function BotVsBot() {
           </Box>
         </Stack>
       </Grid>
-    </Grid>
+    </Box>
   );
 }
