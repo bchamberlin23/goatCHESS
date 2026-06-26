@@ -50,6 +50,7 @@ import { useLocalEngines } from "@/hooks/useLocalEngines";
 import { engineSelectionKey } from "@/lib/engine/selection";
 import { localBridgeAvailableAtom } from "@/lib/engine/localEngineConfig";
 import { logMessageIfLocalhost } from "@/lib/helpers";
+import { getMyEnginePreset } from "@/lib/engine/myEngine";
 
 interface Props {
   open: boolean;
@@ -111,7 +112,10 @@ export default function EngineSettingsDialog({ open, onClose }: Props) {
         id: value.slice("local:".length),
       });
     } else {
-      setEngineSelection({ kind: "browser", name: value as EngineName });
+      setEngineSelection({
+        kind: "browser",
+        name: value.slice("browser:".length) as EngineName,
+      });
     }
   };
 
@@ -190,7 +194,7 @@ export default function EngineSettingsDialog({ open, onClose }: Props) {
                 {Object.values(EngineName).map((engine) => (
                   <MenuItem
                     key={`browser:${engine}`}
-                    value={engine}
+                    value={`browser:${engine}`}
                     disabled={!isEngineSupported(engine)}
                   >
                     {ENGINE_LABELS[engine].full}
@@ -358,6 +362,22 @@ export default function EngineSettingsDialog({ open, onClose }: Props) {
                 Add
               </Button>
             </Grid>
+          </Grid>
+
+          <Grid container justifyContent="center" size={12}>
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<Icon icon="mdi:desktop-classic" />}
+              onClick={() => {
+                const preset = getMyEnginePreset();
+                setNewEngineName(preset.name);
+                setNewEnginePath(preset.path);
+              }}
+              sx={{ textTransform: "none" }}
+            >
+              Quick-add my desktop engine
+            </Button>
           </Grid>
 
           {addError && (

@@ -168,7 +168,7 @@ export default function GameSettingsDialog({ open, onClose }: Props) {
                   } else {
                     setEnginePlaySelection({
                       kind: "browser",
-                      name: value as EngineName,
+                      name: value.slice("browser:".length) as EngineName,
                     });
                   }
                 }}
@@ -177,7 +177,7 @@ export default function GameSettingsDialog({ open, onClose }: Props) {
                 {Object.values(EngineName).map((engine) => (
                   <MenuItem
                     key={`browser:${engine}`}
-                    value={engine}
+                    value={`browser:${engine}`}
                     disabled={!isEngineSupported(engine)}
                   >
                     {ENGINE_LABELS[engine].full}

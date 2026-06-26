@@ -16,8 +16,48 @@ import { WebSocketServer } from "ws";
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { execSync } from "node:child_process";
+import os from "node:os";
+import path from "node:path";
 
 const PORT = Number(process.env.CHESSKIT_BRIDGE_PORT) || 8765;
+
+const expandTilde = (inputPath) => {
+  if (typeof inputPath !== "string") return inputPath;
+  if (inputPath === "~" || inputPath.startsWith("~/")) {
+    const home = os.homedir();
+    if (!home) return inputPath;
+    return path.join(home, inputPath.slice(1));
+  }
+  return inputPath;
+};
+
+const MY_ENGINE_FOLDER_NAME = "my chess engine";
+const MY_ENGINE_BINARY_NAMES = [
+  "engine",
+  "my_chess_engine",
+  "chess_engine",
+  "my_engine",
+  "main",
+  "a.out",
+  "chess",
+];
+
+const detectMyEngine = () => {
+  const home = os.homedir();
+  if (!home) return null;
+
+  const folder = path.join(home, "Desktop", MY_ENGINE_FOLDER_NAME);
+  if (!existsSync(folder)) return null;
+
+  const ext = process.platform === "win32" ? ".exe" : "";
+  for (const name of MY_ENGINE_BINARY_NAMES) {
+    const binaryPath = path.join(folder, `${name}${ext}`);
+    if (existsSync(binaryPath)) {
+      return { name: "My Engine", path: binaryPath };
+    }
+  }
+  return null;
+};
 
 // On startup, scan a few common locations for installed engines so the
 // client can show "detected" engines in the settings UI.
@@ -34,18 +74,24 @@ const detectEngines = () => {
   const found = [];
   for (const { name, args } of candidates) {
     try {
-      const path = execSync(`command -v ${name}`, {
+      const binaryPath = execSync(`command -v ${name}`, {
         stdio: ["ignore", "pipe", "ignore"],
       })
         .toString()
         .trim();
-      if (path && existsSync(path)) {
-        found.push({ name, path });
+      if (binaryPath && existsSync(binaryPath)) {
+        found.push({ name, path: binaryPath });
       }
     } catch {
       // not installed
     }
   }
+
+  const myEngine = detectMyEngine();
+  if (myEngine) {
+    found.push(myEngine);
+  }
+
   return found;
 };
 
@@ -273,16 +319,17 @@ wss.on("connection", (ws) => {
         );
         return;
       }
-      if (!existsSync(msg.path)) {
+      const resolvedPath = expandTilde(msg.path);
+    if (!existsSync(resolvedPath)) {
         ws.send(
           JSON.stringify({
             type: "error",
-            message: `Engine binary not found: ${msg.path}`,
+            message: `Engine binary not found: ${resolvedPath}`,
           })
         );
         return;
       }
-      session = new EngineSession(ws, msg.path, msg.options);
+      session = new EngineSession(ws, resolvedPath, msg.options);
       session.start();
       return;
     }

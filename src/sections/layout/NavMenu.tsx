@@ -16,6 +16,7 @@ import {
 const MenuOptions = [
   { text: "Home", icon: "mdi:home", href: "/" },
   { text: "Play", icon: "streamline:chess-pawn", href: "/play" },
+  { text: "Bots", icon: "mdi:robot", href: "/bots" },
   { text: "Puzzles", icon: "mdi:puzzle", href: "/puzzles" },
   {
     text: "Analysis",
