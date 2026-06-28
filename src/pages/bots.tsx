@@ -3,6 +3,7 @@ import BotBoard from "@/sections/botVsBot/board";
 import BotControls from "@/sections/botVsBot/BotControls";
 import BotMoveHistory from "@/sections/botVsBot/BotMoveHistory";
 import BotSettingsButton from "@/sections/botVsBot/BotSettingsButton";
+import BotTournamentPanel from "@/sections/botVsBot/BotTournamentPanel";
 import EvalHeader from "@/sections/botVsBot/EvalHeader";
 import { useBotMatch } from "@/sections/botVsBot/useBotMatch";
 import {
@@ -11,12 +12,14 @@ import {
   blackEngineSelectionAtom,
   whiteEngineEloAtom,
   blackEngineEloAtom,
+  botTournamentAtom,
 } from "@/sections/botVsBot/states";
 import { Grid2 as Grid, Box, Stack } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { ENGINE_LABELS } from "@/constants";
 import { useLocalEngines } from "@/hooks/useLocalEngines";
+import { getNextGamePairing } from "@/sections/botVsBot/tournament";
 
 export default function BotVsBot() {
   const setBoardFlipped = useSetAtom(botBoardFlippedAtom);
@@ -24,17 +27,24 @@ export default function BotVsBot() {
   const blackSelection = useAtomValue(blackEngineSelectionAtom);
   const whiteElo = useAtomValue(whiteEngineEloAtom);
   const blackElo = useAtomValue(blackEngineEloAtom);
+  const tournament = useAtomValue(botTournamentAtom);
   const { getEngineLabel } = useLocalEngines();
+  const activePairing = tournament ? getNextGamePairing(tournament) : undefined;
 
-  const whiteLabel =
-    whiteSelection.kind === "browser"
+  const whiteLabel = activePairing
+    ? activePairing.white.name
+    : whiteSelection.kind === "browser"
       ? ENGINE_LABELS[whiteSelection.name]?.small || "Stockfish"
       : getEngineLabel(whiteSelection.id);
 
-  const blackLabel =
-    blackSelection.kind === "browser"
+  const blackLabel = activePairing
+    ? activePairing.black.name
+    : blackSelection.kind === "browser"
       ? ENGINE_LABELS[blackSelection.name]?.small || "Stockfish"
       : getEngineLabel(blackSelection.id);
+
+  const displayedWhiteElo = activePairing?.white.elo ?? whiteElo;
+  const displayedBlackElo = activePairing?.black.elo ?? blackElo;
 
   useBotMatch();
 
@@ -99,18 +109,27 @@ export default function BotVsBot() {
         <EvalHeader
           whiteLabel={whiteLabel}
           blackLabel={blackLabel}
-          whiteElo={whiteElo}
-          blackElo={blackElo}
+          whiteElo={displayedWhiteElo}
+          blackElo={displayedBlackElo}
         />
 
         {/* Move history */}
-        <Box sx={{ flexGrow: 1, minHeight: 180, overflow: "hidden", mb: 2, width: "100%" }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            minHeight: 180,
+            overflow: "hidden",
+            mb: 2,
+            width: "100%",
+          }}
+        >
           <BotMoveHistory />
         </Box>
 
         {/* Bottom controls */}
         <Stack spacing={2} width="100%">
           <BotControls />
+          <BotTournamentPanel />
           <Box width="100%" display="flex" justifyContent="center">
             <BotSettingsButton />
           </Box>

@@ -9,10 +9,12 @@ import {
   botBoardFlippedAtom,
   whiteEngineSelectionAtom,
   blackEngineSelectionAtom,
+  botTournamentAtom,
 } from "./states";
 import { useChessActions } from "@/hooks/useChessActions";
 import { useLocalEngines } from "@/hooks/useLocalEngines";
 import { ENGINE_LABELS } from "@/constants";
+import { getNextGamePairing } from "./tournament";
 export default function BotControls() {
   const game = useAtomValue(botGameAtom);
   const [isRunning, setIsRunning] = useAtom(botIsRunningAtom);
@@ -21,25 +23,46 @@ export default function BotControls() {
   const setBoardFlipped = useSetAtom(botBoardFlippedAtom);
   const whiteSelection = useAtomValue(whiteEngineSelectionAtom);
   const blackSelection = useAtomValue(blackEngineSelectionAtom);
+  const tournament = useAtomValue(botTournamentAtom);
   const { reset: resetGame } = useChessActions(botGameAtom);
   const { getEngineLabel } = useLocalEngines();
+  const activePairing = tournament ? getNextGamePairing(tournament) : undefined;
 
-  const whiteLabel =
+  const whiteLabel = activePairing
+    ? activePairing.white.name
+    : whiteSelection.kind === "browser"
+      ? ENGINE_LABELS[whiteSelection.name]?.small || "Stockfish"
+      : getEngineLabel(whiteSelection.id);
+
+  const blackLabel = activePairing
+    ? activePairing.black.name
+    : blackSelection.kind === "browser"
+      ? ENGINE_LABELS[blackSelection.name]?.small || "Stockfish"
+      : getEngineLabel(blackSelection.id);
+
+  const whiteRating = activePairing?.white.elo;
+  const blackRating = activePairing?.black.elo;
+
+  const resetCurrentGame = () => {
+    resetGame({
+      white: { name: whiteLabel, rating: whiteRating },
+      black: { name: blackLabel, rating: blackRating },
+    });
+  };
+
+  const configuredWhiteLabel =
     whiteSelection.kind === "browser"
       ? ENGINE_LABELS[whiteSelection.name]?.small || "Stockfish"
       : getEngineLabel(whiteSelection.id);
 
-  const blackLabel =
+  const configuredBlackLabel =
     blackSelection.kind === "browser"
       ? ENGINE_LABELS[blackSelection.name]?.small || "Stockfish"
       : getEngineLabel(blackSelection.id);
 
   const handleStart = () => {
     if (game.isGameOver()) {
-      resetGame({
-        white: { name: whiteLabel },
-        black: { name: blackLabel },
-      });
+      resetCurrentGame();
     }
     setViewMoveIdx(null);
     setIsPaused(false);
@@ -59,10 +82,7 @@ export default function BotControls() {
     setIsRunning(false);
     setIsPaused(false);
     setViewMoveIdx(null);
-    resetGame({
-      white: { name: whiteLabel },
-      black: { name: blackLabel },
-    });
+    resetCurrentGame();
   };
 
   const isGameOver = game.isGameOver();
@@ -108,7 +128,9 @@ export default function BotControls() {
                 ? `${game.turn() === "w" ? whiteLabel : blackLabel} is thinking...`
                 : isGameOver
                   ? "Match finished"
-                  : "Match paused"}
+                  : tournament
+                    ? "Tournament paused"
+                    : `${configuredWhiteLabel} vs ${configuredBlackLabel}`}
             </Typography>
           </Stack>
 
